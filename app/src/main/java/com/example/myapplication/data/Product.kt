@@ -10,6 +10,7 @@ data class Product(
     val name: String,
     val description: String,
     val price: Double,
+    val stock: Int,
     val imageResource: String,
     val arModelResource: String,
 )
