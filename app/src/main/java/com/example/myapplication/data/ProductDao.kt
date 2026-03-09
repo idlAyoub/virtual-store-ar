@@ -15,6 +15,9 @@ interface ProductDao {
     @Query("SELECT * FROM products WHERE id = :id")
     fun getProductById(id: Int): LiveData<Product>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Query("SELECT * FROM products WHERE name LIKE '%' || :searchQuery || '%'")
+    fun searchProducts(searchQuery: String): LiveData<List<Product>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(products: List<Product>)
 }

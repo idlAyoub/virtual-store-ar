@@ -10,6 +10,10 @@ class ProductRepository(private val productDao: ProductDao) {
         return productDao.getProductById(id)
     }
 
+    fun searchProducts(query: String): LiveData<List<Product>> {
+        return productDao.searchProducts(query)
+    }
+
     suspend fun insertAll(products: List<Product>) {
         productDao.insertAll(products)
     }
