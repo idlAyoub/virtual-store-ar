@@ -18,6 +18,7 @@ object DataSeeder {
                     name = "$name $i",
                     description = "High quality $name, perfect for modern interiors. Durable and stylish.",
                     price = (50 + i * 2).toDouble(),
+                    stock = (5 + i % 20),          // ← ADD THIS LINE
                     imageResource = "img_product_${(i % 5) + 1}",
                     arModelResource = if (i % 3 == 0) "model_${name.lowercase()}" else ""
                 )
