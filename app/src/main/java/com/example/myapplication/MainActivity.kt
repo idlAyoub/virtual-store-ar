@@ -9,6 +9,7 @@ import com.example.myapplication.data.CartRepository
 import com.example.myapplication.data.DataSeeder
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import android.content.Intent
 
 class MainActivity : ComponentActivity() {
 
@@ -26,6 +27,11 @@ class MainActivity : ComponentActivity() {
             }
             runDatabaseValidation()
         }
+
+        // TEMP TEST - remove after testing
+        val testIntent = Intent(this, OrderSummaryActivity::class.java)
+        testIntent.putExtra("ITEM_TOTAL", 180.0)
+        startActivity(testIntent)
     }
 
     private fun logResult(testName: String, success: Boolean) {
@@ -76,4 +82,7 @@ class MainActivity : ComponentActivity() {
         val finalCount = repository.cartItemCount.first()
         logResult("Clear cart", finalCount == 0)
     }
+
+
+
 }
