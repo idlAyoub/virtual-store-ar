@@ -1,89 +1,147 @@
-package com.example.myapplication.ui
+package com.example.myapplication
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.myapplication.ui.OrderSummaryActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.data.AppDatabase
 import com.example.myapplication.data.CartRepository
 import com.example.myapplication.data.DataSeeder
-import kotlinx.coroutines.flow.first
+import com.example.myapplication.ui.adapter.ProductAdapter
+import com.example.myapplication.viewmodel.ProductViewModel
 import kotlinx.coroutines.launch
 
+/**
+ * MainActivity - Modern e-commerce catalog with search and grid layout
+ *
+ * Features:
+ * - Header with app title and cart badge
+ * - Search bar
+ * - 2-column product grid layout
+ * - Real-time product filtering
+ * - Cart item counter badge
+ */
 class MainActivity : ComponentActivity() {
 
-    private lateinit var repository: CartRepository
+    private lateinit var productViewModel: ProductViewModel
+    private lateinit var productAdapter: ProductAdapter
+    private lateinit var cartRepository: CartRepository
+    private lateinit var tvCartBadge: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-        val db = AppDatabase.Companion.getDatabase(this)
-        repository = CartRepository(db.cartDao())
+        // Initialize database and repositories
+        val db = AppDatabase.getDatabase(this)
+        cartRepository = CartRepository(db.cartDao())
 
+        // Initialize ViewModel
+        productViewModel = ViewModelProvider(this).get(ProductViewModel::class.java)
+
+        // Seed database with initial products if empty
         lifecycleScope.launch {
             if (db.productDao().getProductCount() == 0) {
                 db.productDao().insertAll(DataSeeder.getProductList())
             }
-            runDatabaseValidation()
         }
 
-        // TEMP TEST - remove after testing
-        val testIntent = Intent(this, OrderSummaryActivity::class.java)
-        testIntent.putExtra("ITEM_TOTAL", 180.0)
-        startActivity(testIntent)
+        // Set up UI components
+        setupRecyclerView()
+        setupSearchBar()
+        setupCartIcon()
+        observeProducts()
+        observeCartUpdates()
     }
 
-    private fun logResult(testName: String, success: Boolean) {
-        if (success) {
-            Log.d("DB_TEST", "PASS: $testName")
+    /**
+     * Initialize RecyclerView with 2-column GridLayoutManager
+     */
+    private fun setupRecyclerView() {
+        val rvProducts = findViewById<RecyclerView>(R.id.rvProducts)
+        productAdapter = ProductAdapter(
+            onAddToCartClick = { product ->
+                // Handle add to cart with quantity 1
+                lifecycleScope.launch {
+                    cartRepository.addToCart(product.id, 1)
+                }
+            }
+        )
+        rvProducts.adapter = productAdapter
+        rvProducts.layoutManager = GridLayoutManager(this, 2)
+    }
+
+    /**
+     * Set up search bar with EditText text change listener
+     */
+    private fun setupSearchBar() {
+        val etSearch = findViewById<EditText>(R.id.etSearch)
+
+        etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Update ViewModel with search query
+                productViewModel.setSearchQuery(s?.toString() ?: "")
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
+
+    /**
+     * Set up cart icon and badge
+     */
+    private fun setupCartIcon() {
+        val cartIconContainer = findViewById<FrameLayout>(R.id.cartIconContainer)
+        tvCartBadge = findViewById(R.id.tvCartBadge)
+
+        cartIconContainer.setOnClickListener {
+            // Navigate to cart (will be implemented by Member 4)
+            // startActivity(Intent(this, CartActivity::class.java))
+        }
+    }
+
+    /**
+     * Observe filtered products from ViewModel
+     */
+    private fun observeProducts() {
+        productViewModel.filteredProducts.observe(this) { filteredProducts ->
+            productAdapter.updateProductList(filteredProducts)
+        }
+    }
+
+    /**
+     * Observe cart updates and update badge count
+     */
+    private fun observeCartUpdates() {
+        lifecycleScope.launch {
+            cartRepository.cartItemCount.collect { count ->
+                updateCartBadge(count)
+            }
+        }
+    }
+
+    /**
+     * Update cart badge with item count
+     */
+    private fun updateCartBadge(count: Int) {
+        if (count > 0) {
+            tvCartBadge.text = count.toString()
+            tvCartBadge.visibility = android.view.View.VISIBLE
         } else {
-            Log.e("DB_TEST", "FAIL: $testName")
+            tvCartBadge.visibility = android.view.View.GONE
         }
     }
-
-    private suspend fun runDatabaseValidation() {
-
-        repository.validateOrder()
-
-        val emptyCount = repository.cartItemCount.first()
-        logResult("Cart starts empty", emptyCount == 0)
-
-        repository.addToCart(1, 2)
-
-        val countAfterInsert = repository.cartItemCount.first()
-        logResult("Insert item", countAfterInsert == 1)
-
-        repository.addToCart(1, 3)
-
-        val items = repository.cartItems.first()
-        val quantityCorrect = items.firstOrNull()?.quantity == 5
-        logResult("Add same product increases quantity", quantityCorrect)
-
-        repository.updateQuantity(1, 10)
-
-        val updatedItems = repository.cartItems.first()
-        val updateCorrect = updatedItems.firstOrNull()?.quantity == 10
-        logResult("Update quantity", updateCorrect)
-
-        repository.removeByProductId(1)
-
-        val countAfterDelete = repository.cartItemCount.first()
-        logResult("Delete item", countAfterDelete == 0)
-
-        repository.addToCart(1, 1)
-        repository.addToCart(2, 2)
-
-        val multiCount = repository.cartItemCount.first()
-        logResult("Multiple items inserted", multiCount == 2)
-
-        repository.validateOrder()
-
-        val finalCount = repository.cartItemCount.first()
-        logResult("Clear cart", finalCount == 0)
-    }
-
-
 
 }
