@@ -1,6 +1,16 @@
 <resources>
     <string name="app_name">Virtual Store</string>
 
+    <!-- Catalog Screen -->
+    <string name="search_hint">Search products...</string>
+
+    <!-- Product Detail Screen -->
+    <string name="product_details">Product Details</string>
+    <string name="in_stock">In Stock</string>
+    <string name="out_of_stock">Out of Stock</string>
+    <string name="description">Description</string>
+    <string name="add_to_cart">Add to Cart</string>
+
     <!-- Order Summary Screen -->
     <string name="order_confirmed">Order Confirmed!</string>
     <string name="thank_you">Thank you for your purchase</string>
