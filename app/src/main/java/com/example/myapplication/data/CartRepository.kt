@@ -9,6 +9,9 @@ class CartRepository(private val cartDao: CartDao) {
 
     val cartItemCount: Flow<Int> = cartDao.getCartItemCount()
 
+
+    val cartTotal: Flow<Double> = cartDao.getCartTotal()
+
     // ADD TO CART (transaction sécurisée)
 
     @Transaction

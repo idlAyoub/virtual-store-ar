@@ -15,6 +15,14 @@ interface ProductDao {
     @Query("SELECT * FROM products WHERE id = :id")
     fun getProductById(id: Int): LiveData<Product>
 
+    /**
+     * One-shot (suspend) version of [getProductById].
+     * Used by CartActivity when it needs to resolve a Product once
+     * without maintaining a long-lived LiveData observer.
+     */
+    @Query("SELECT * FROM products WHERE id = :id LIMIT 1")
+    suspend fun getProductByIdOnce(id: Int): Product?
+
     @Query("SELECT * FROM products WHERE name LIKE '%' || :searchQuery || '%'")
     fun searchProducts(searchQuery: String): LiveData<List<Product>>
 
