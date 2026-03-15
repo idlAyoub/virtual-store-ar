@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_card"
     android:fillViewport="true"
-    tools:context=".OrderSummaryActivity">
+    tools:context=".ui.OrderSummaryActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
 
         </FrameLayout>
 
-        <!-- Order Confirmed Text -->
+        <!-- Order Confirmed -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
             android:textSize="22sp"
             android:textStyle="bold" />
 
-        <!-- Thank You Text -->
+        <!-- Thank You -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
             android:textColor="@color/color_text_secondary"
             android:textSize="14sp" />
 
-        <!-- Order Details Card -->
+        <!-- Order Total Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,89 +68,7 @@
                 android:orientation="vertical"
                 android:padding="@dimen/spacing_card">
 
-                <!-- Item Total -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/summary_row_height"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/item_total"
-                        android:textColor="@color/color_text_primary"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/tvItemTotal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$0.00"
-                        android:textColor="@color/color_text_primary"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-                <!-- Tax -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/summary_row_height"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/tax"
-                        android:textColor="@color/color_text_primary"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/tvTax"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$5.00"
-                        android:textColor="@color/color_text_primary"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-                <!-- Discount -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/summary_row_height"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/discount"
-                        android:textColor="@color/color_text_primary"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/tvDiscount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$0"
-                        android:textColor="@color/color_text_primary"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="8dp"
-                    android:background="@color/color_border" />
-
-                <!-- Total -->
+                <!-- Total Row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/summary_row_height"
@@ -163,7 +81,7 @@
                         android:layout_weight="1"
                         android:text="@string/total"
                         android:textColor="@color/color_text_primary"
-                        android:textSize="17sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -171,8 +89,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="$0.00"
-                        android:textColor="@color/color_text_primary"
-                        android:textSize="17sp"
+                        android:textColor="@color/color_primary"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -181,7 +99,7 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Continue Shopping Button -->
+        <!-- Continue Shopping -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnContinueShopping"
             android:layout_width="match_parent"
@@ -194,19 +112,6 @@
             android:textStyle="bold"
             app:cornerRadius="@dimen/radius_pill" />
 
-        <!-- View Order Details Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnViewOrderDetails"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height_secondary"
-            android:layout_marginTop="12dp"
-            android:backgroundTint="@color/color_card"
-            android:strokeColor="@color/color_black"
-            android:strokeWidth="1"
-            android:text="@string/view_order_details"
-            android:textColor="@color/color_text_primary"
-            android:textSize="16sp"
-            app:cornerRadius="@dimen/radius_pill" />
 
         <View
             android:layout_width="match_parent"

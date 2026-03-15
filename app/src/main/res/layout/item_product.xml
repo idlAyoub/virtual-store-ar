@@ -29,6 +29,7 @@
 
             <!-- AR Badge (top-right corner) -->
             <LinearLayout
+                android:id="@+id/arBadgeContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|end"
@@ -36,14 +37,16 @@
                 android:background="@drawable/bg_ar_badge"
                 android:padding="6dp"
                 android:orientation="horizontal"
-                android:gravity="center">
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true">
 
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:src="@drawable/ic_camera"
                     android:contentDescription="AR"
-                    android:tint="@color/color_white" />
+                    app:tint="@color/color_white" />
 
                 <TextView
                     android:layout_width="wrap_content"
