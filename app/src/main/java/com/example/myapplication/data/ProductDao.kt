@@ -15,11 +15,7 @@ interface ProductDao {
     @Query("SELECT * FROM products WHERE id = :id")
     fun getProductById(id: Int): LiveData<Product>
 
-    /**
-     * One-shot (suspend) version of [getProductById].
-     * Used by CartActivity when it needs to resolve a Product once
-     * without maintaining a long-lived LiveData observer.
-     */
+    // One-shot suspend version — used for order validation and stock update
     @Query("SELECT * FROM products WHERE id = :id LIMIT 1")
     suspend fun getProductByIdOnce(id: Int): Product?
 
@@ -31,4 +27,8 @@ interface ProductDao {
 
     @Query("SELECT COUNT(*) FROM products")
     suspend fun getProductCount(): Int
+
+    // Update stock after a successful order
+    @Query("UPDATE products SET stock = :newStock WHERE id = :productId")
+    suspend fun updateStock(productId: Int, newStock: Int)
 }

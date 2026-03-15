@@ -1,17 +1,19 @@
-package com.example.myapplication
+package com.example.myapplication.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.R
 import com.example.myapplication.data.AppDatabase
 import com.example.myapplication.data.CartRepository
 import com.example.myapplication.data.DataSeeder
@@ -46,7 +48,7 @@ class MainActivity : ComponentActivity() {
         cartRepository = CartRepository(db.cartDao())
 
         // Initialize ViewModel
-        productViewModel = ViewModelProvider(this).get(ProductViewModel::class.java)
+        productViewModel = ViewModelProvider(this)[ProductViewModel::class.java]
 
         // Seed database with initial products if empty
         lifecycleScope.launch {
@@ -107,8 +109,8 @@ class MainActivity : ComponentActivity() {
         tvCartBadge = findViewById(R.id.tvCartBadge)
 
         cartIconContainer.setOnClickListener {
-            // Navigate to cart (will be implemented by Member 4)
-            // startActivity(Intent(this, CartActivity::class.java))
+            // Navigate to cart
+            startActivity(Intent(this, CartActivity::class.java))
         }
     }
 
@@ -138,9 +140,9 @@ class MainActivity : ComponentActivity() {
     private fun updateCartBadge(count: Int) {
         if (count > 0) {
             tvCartBadge.text = count.toString()
-            tvCartBadge.visibility = android.view.View.VISIBLE
+            tvCartBadge.visibility = View.VISIBLE
         } else {
-            tvCartBadge.visibility = android.view.View.GONE
+            tvCartBadge.visibility = View.GONE
         }
     }
 

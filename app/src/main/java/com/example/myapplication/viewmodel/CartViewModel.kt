@@ -40,11 +40,25 @@ class CartViewModel(private val repository: CartRepository) : ViewModel() {
     val subtotal: LiveData<Double> = repository.cartTotal.asLiveData()
 
     /**
-     * Grand total = subtotal + flat shipping.
-     * Re-emits whenever the subtotal flow changes.
+     * Shipping cost (flat rate).
+     */
+    val shipping: LiveData<Double> = repository.cartTotal
+        .map { FLAT_SHIPPING_COST }
+        .asLiveData()
+
+    /**
+     * Tax calculated as percentage of subtotal.
+     */
+    val tax: LiveData<Double> = repository.cartTotal
+        .map { sub -> sub * TAX_RATE }
+        .asLiveData()
+
+    /**
+     * Grand total = subtotal + shipping + tax.
+     * Re-emits whenever any component changes.
      */
     val grandTotal: LiveData<Double> = repository.cartTotal
-        .map { sub -> sub + FLAT_SHIPPING_COST }
+        .map { sub -> sub + FLAT_SHIPPING_COST + (sub * TAX_RATE) }
         .asLiveData()
 
     // ── Cart Mutation Actions ──────────────────────────────────────────────────
@@ -88,7 +102,8 @@ class CartViewModel(private val repository: CartRepository) : ViewModel() {
     // ── Constants ──────────────────────────────────────────────────────────────
 
     companion object {
-        const val FLAT_SHIPPING_COST = 5.0
+        const val FLAT_SHIPPING_COST = 10.0
+        const val TAX_RATE = 0.10  // 10% tax
         private const val MAX_QUANTITY = 99
     }
 

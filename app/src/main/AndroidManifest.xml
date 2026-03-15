@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.myapplication">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Required for internet access (Glide loading from URLs) -->
+    <!-- Internet access (Glide loading from URLs) -->
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- Optional but recommended for network state monitoring -->
+    <!-- Network state monitoring -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <!-- Required for ARCore / ARSceneView -->
@@ -24,8 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
 
+        <!-- Launcher -->
         <activity
-            android:name=".ui.CartActivity"
+            android:name="com.example.myapplication.ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,6 +33,27 @@
             </intent-filter>
         </activity>
 
+        <!-- Product Detail -->
+        <activity
+            android:name="com.example.myapplication.ui.ProductDetailActivity"
+            android:exported="false"
+            android:parentActivityName="com.example.myapplication.ui.MainActivity" />
+
+        <!-- AR View -->
+        <activity
+            android:name="com.example.myapplication.ui.ARViewActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- Order Summary -->
+        <activity
+            android:name="com.example.myapplication.ui.OrderSummaryActivity"
+            android:exported="false" />
+
+        <!-- Cart Activity -->
+        <activity
+            android:name="com.example.myapplication.ui.CartActivity"
+            android:exported="false" />
 
     </application>
 

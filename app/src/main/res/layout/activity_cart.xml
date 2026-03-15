@@ -153,6 +153,16 @@
                         android:textStyle="bold" />
 
                     <!-- Subtotal row -->
+
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="8dp"
+                        android:background="@color/color_border" />
+
+                    <!-- Subtotal row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/summary_row_height"
@@ -196,9 +206,34 @@
                             android:id="@+id/tvShipping"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/color_primary"
+                            android:textColor="@color/color_text_primary"
                             android:textSize="14sp"
-                            tools:text="Free" />
+                            tools:text="$10.00" />
+
+                    </LinearLayout>
+
+                    <!-- Tax row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/summary_row_height"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Tax (10%)"
+                            android:textColor="@color/color_text_secondary"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tvTax"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/color_text_primary"
+                            android:textSize="14sp"
+                            tools:text="$25.00" />
 
                     </LinearLayout>
 

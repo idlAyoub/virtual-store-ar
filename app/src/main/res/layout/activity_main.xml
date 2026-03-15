@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_background"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <!-- HEADER SECTION -->
     <LinearLayout
@@ -59,7 +59,7 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_gravity="center"
-                android:src="@android:drawable/ic_menu_view"
+                android:src="@drawable/ic_cart"
                 android:contentDescription="Cart"
                 app:tint="@color/color_primary" />
 
@@ -69,7 +69,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="top|end"
-                android:background="@color/color_primary"
+                android:background="@drawable/badge_background_round"
                 android:text="0"
                 android:textColor="@color/color_white"
                 android:textSize="11sp"

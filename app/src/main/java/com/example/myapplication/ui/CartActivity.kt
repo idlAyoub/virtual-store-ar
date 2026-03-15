@@ -35,6 +35,7 @@ class CartActivity : ComponentActivity() {
 
     private lateinit var viewModel: CartViewModel
     private lateinit var adapter: CartAdapter
+    private lateinit var cartRepository: CartRepository
 
     // ── View references ────────────────────────────────────────────────────────
     private lateinit var rvCartItems: RecyclerView
@@ -42,6 +43,7 @@ class CartActivity : ComponentActivity() {
     private lateinit var tvCartCount: TextView
     private lateinit var tvSubtotal: TextView
     private lateinit var tvShipping: TextView
+    private lateinit var tvTax: TextView
     private lateinit var tvTotal: TextView
     private lateinit var btnProceedToCheckout: MaterialButton
 
@@ -62,8 +64,8 @@ class CartActivity : ComponentActivity() {
 
     private fun initViewModel() {
         val db = AppDatabase.Companion.getDatabase(this)
-        val repository = CartRepository(db.cartDao())
-        val factory = CartViewModel.Factory(repository)
+        cartRepository = CartRepository(db.cartDao())
+        val factory = CartViewModel.Factory(cartRepository)
         viewModel = ViewModelProvider(this, factory)[CartViewModel::class.java]
     }
 
@@ -73,6 +75,7 @@ class CartActivity : ComponentActivity() {
         tvCartCount = findViewById(R.id.tvCartCount)
         tvSubtotal = findViewById(R.id.tvSubtotal)
         tvShipping = findViewById(R.id.tvShipping)
+        tvTax = findViewById(R.id.tvTax)
         tvTotal = findViewById(R.id.tvTotal)
         btnProceedToCheckout = findViewById(R.id.btnProceedToCheckout)
 
@@ -100,12 +103,30 @@ class CartActivity : ComponentActivity() {
     }
 
     private fun setupClickListeners() {
-        // Checkout
+        // Checkout with validation
         btnProceedToCheckout.setOnClickListener {
-            val itemTotal = viewModel.subtotal.value ?: 0.0
-            val intent = Intent(this, OrderSummaryActivity::class.java)
-            intent.putExtra("ITEM_TOTAL", itemTotal)
-            startActivity(intent)
+            lifecycleScope.launch {
+                // Validate stock before proceeding
+                val db = AppDatabase.getDatabase(this@CartActivity)
+                val outOfStockItems = cartRepository.validateAndPlaceOrder(db.productDao())
+                
+                if (outOfStockItems.isNotEmpty()) {
+                    // Some items ran out of stock
+                    Toast.makeText(
+                        this@CartActivity,
+                        "Out of stock: ${outOfStockItems.joinToString(", ")}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@launch
+                }
+                
+                // All items are in stock - proceed to order summary
+                val itemTotal = viewModel.subtotal.value ?: 0.0
+                val intent = Intent(this@CartActivity, OrderSummaryActivity::class.java)
+                intent.putExtra("ITEM_TOTAL", itemTotal)
+                intent.putExtra("ORDER_ALREADY_VALIDATED", true)
+                startActivity(intent)
+            }
         }
     }
 
@@ -149,8 +170,15 @@ class CartActivity : ComponentActivity() {
             tvSubtotal.text = "$%.2f".format(sub)
         }
 
-        // Shipping (fixed)
-        tvShipping.text = "$%.2f".format(CartViewModel.Companion.FLAT_SHIPPING_COST)
+        // Shipping
+        viewModel.shipping.observe(this) { shipping ->
+            tvShipping.text = "$%.2f".format(shipping)
+        }
+
+        // Tax
+        viewModel.tax.observe(this) { taxAmount ->
+            tvTax.text = "$%.2f".format(taxAmount)
+        }
 
         // Grand total
         viewModel.grandTotal.observe(this) { total ->
