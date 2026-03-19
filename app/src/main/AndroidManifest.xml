@@ -23,6 +23,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
 
+        <!-- ARCore Optional Metadata -->
+        <meta-data
+            android:name="com.google.ar.core"
+            android:value="optional" />
+
         <!-- Launcher -->
         <activity
             android:name="com.example.myapplication.ui.MainActivity"

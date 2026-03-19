@@ -13,7 +13,7 @@ object DataSeeder {
                 price = 1099.00,
                 stock = 8,
                 imageResource = "iphone_12_pro",
-                arModelResource = "model_iphone_12_pro_max"
+                arModelResource = "models/iphone_12_pro.glb"
             )
         )
 
@@ -24,7 +24,7 @@ object DataSeeder {
                 price = 349.99,
                 stock = 12,
                 imageResource = "gopro_hero_2018",
-                arModelResource = "model_gopro_hero"
+                arModelResource = "models/gopro_hero_2018.glb"
             )
         )
 
@@ -35,7 +35,7 @@ object DataSeeder {
                 price = 499.99,
                 stock = 6,
                 imageResource = "playstation_5_digital",
-                arModelResource = "model_playstation_5"
+                arModelResource = "models/playstation_5_digital.glb"
             )
         )
 
