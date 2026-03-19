@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Design Token Colors - Primary -->
-    <color name="color_primary">#8A5CF6</color>
-    <color name="color_primary_dark">#7C3AED</color>
-    <color name="color_primary_light">#A78BFA</color>
-    <color name="color_background">#F9F8F2</color>
+    <color name="color_primary">#2D7A5F</color>
+    <color name="color_primary_dark">#1B5E4A</color>
+    <color name="color_primary_light">#4CAF8C</color>
+    <color name="color_on_primary">#FFFFFF</color>
+    <color name="color_background">#F5F7F6</color>
     <color name="color_card">#FFFFFF</color>
-    <color name="color_secondary_bg">#EEF2E6</color>
+    <color name="color_surface_elevated">#FFFFFF</color>
+    <color name="color_secondary_bg">#E8F0EC</color>
     <color name="color_text_primary">#1A1A1A</color>
-    <color name="color_text_secondary">#888888</color>
-    <color name="color_text_tertiary">#BBBBBB</color>
-    <color name="color_border">#EEEEEE</color>
+    <color name="color_text_secondary">#6B7280</color>
+    <color name="color_text_tertiary">#9CA3AF</color>
+    <color name="color_border">#E5E7EB</color>
+    <color name="color_divider">#E5E7EB</color>
 
     <!-- Additional Colors -->
-    <color name="color_search_bg">#F3F1F5</color>
+    <color name="color_search_bg">#F0F4F2</color>
     <color name="color_disc_light">#D8E5C0</color>
     <color name="color_oak">#8B6914</color>
     <color name="color_white">#FFFFFF</color>
@@ -21,12 +24,17 @@
     <color name="color_walnut">#4A3728</color>
     <color name="color_camera_overlay">#55000000</color>
     <color name="color_semi_transparent_dark">#B3000000</color>
+    <color name="color_ripple">#1A2D7A5F</color>
 
     <!-- Category Colors -->
-    <color name="color_category_blue">#3B82F6</color>
-    <color name="color_category_bg">#EFF6FF</color>
+    <color name="color_category_blue">#2D7A5F</color>
+    <color name="color_category_bg">#E0F2EC</color>
 
     <!-- Badge & Accent Colors -->
-    <color name="color_badge_bg">#F3E8FF</color>
+    <color name="color_badge_bg">#E0F2EC</color>
     <color name="color_accent_gold">#F59E0B</color>
+
+    <!-- Status Colors -->
+    <color name="color_success">#16A34A</color>
+    <color name="color_error">#DC2626</color>
 </resources>
