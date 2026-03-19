@@ -58,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/spacing_screen">
+                android:padding="@dimen/spacing_section">
 
                 <!-- Product Name -->
                 <TextView
@@ -66,8 +66,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_text_primary"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:lineSpacingMultiplier="1.1" />
 
                 <!-- Price Row -->
                 <LinearLayout
@@ -75,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:id="@+id/tvDetailPrice"
@@ -83,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/color_primary"
-                        android:textSize="26sp"
+                        android:textSize="28sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -99,8 +100,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginVertical="16dp"
-                    android:background="@color/color_border" />
+                    android:layout_marginVertical="20dp"
+                    android:background="@color/color_divider" />
 
                 <!-- Description Label -->
                 <TextView
@@ -108,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:text="Description"
                     android:textColor="@color/color_text_primary"
-                    android:textSize="16sp"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <!-- Description Text -->
@@ -116,8 +117,8 @@
                     android:id="@+id/tvDetailDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:lineSpacingMultiplier="1.5"
+                    android:layout_marginTop="10dp"
+                    android:lineSpacingMultiplier="1.6"
                     android:textColor="@color/color_text_secondary"
                     android:textSize="14sp" />
 
@@ -127,14 +128,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="@dimen/spacing_section"
                     android:visibility="gone">
 
                     <!-- AR Card -->
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/ar_card_height"
-                        app:cardCornerRadius="16dp"
+                        app:cardCornerRadius="@dimen/radius_card"
                         app:cardElevation="0dp"
                         app:cardBackgroundColor="@color/color_badge_bg">
 
@@ -155,9 +156,8 @@
                                     android:layout_width="32dp"
                                     android:layout_height="32dp"
                                     android:layout_gravity="center"
-                                    android:src="@drawable/ic_camera"
-                                    android:contentDescription="AR"
-                                    app:tint="@color/color_white" />
+                                    android:src="@drawable/ic_ar"
+                                    android:contentDescription="AR" />
 
                             </FrameLayout>
 
@@ -203,7 +203,7 @@
                         android:textSize="15sp"
                         android:textStyle="bold"
                         app:cornerRadius="@dimen/radius_pill"
-                        app:icon="@drawable/ic_camera"
+                        app:icon="@drawable/ic_ar"
                         app:iconTint="@color/color_white"
                         app:iconGravity="textStart" />
 
@@ -214,7 +214,7 @@
                     android:id="@+id/btnDetailAddToCart"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/button_height_primary"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="@dimen/spacing_section"
                     android:backgroundTint="@color/color_primary"
                     android:text="Add to Cart"
                     android:textColor="@color/color_white"

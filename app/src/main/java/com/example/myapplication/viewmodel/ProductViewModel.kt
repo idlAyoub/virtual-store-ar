@@ -11,11 +11,12 @@ import com.example.myapplication.data.ProductRepository
 import kotlinx.coroutines.launch
 
 /**
- * ProductViewModel - Responsible for managing product data and search logic
+ * ProductViewModel - Responsible for managing product data, search, and category filtering
  *
  * This ViewModel:
  * - Fetches products from the ProductRepository
  * - Handles real-time search filtering
+ * - Handles category filtering (Tout, Chaises, Canapés, Tables, Éclairage)
  * - Exposes product data as LiveData for UI observation
  * - Implements MVVM best practices for lifecycle-safe data delivery
  */
@@ -34,6 +35,10 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     // Search query state
     private val _searchQuery = MutableLiveData<String>("")
 
+    // Category filter state
+    private val _selectedCategory = MutableLiveData<String>("Tout")
+    val selectedCategory: LiveData<String> = _selectedCategory
+
     init {
         // Initialize the database and repository
         val db = AppDatabase.getDatabase(application)
@@ -49,25 +54,35 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     }
 
     /**
-     * Perform search filtering based on product name
+     * Perform search and category filtering
      *
      * @param products The list of products to filter
      * @param query The search query string
      */
     private fun performSearch(products: List<Product>, query: String) {
-        val filtered = if (query.isEmpty()) {
+        val category = _selectedCategory.value ?: "Tout"
+
+        // First filter by category
+        var filtered = if (category == "Tout") {
             products
         } else {
             products.filter { product ->
+                extractCategory(product.name) == category
+            }
+        }
+
+        // Then filter by search query
+        if (query.isNotEmpty()) {
+            filtered = filtered.filter { product ->
                 product.name.contains(query, ignoreCase = true)
             }
         }
+
         _filteredProducts.value = filtered
     }
 
     /**
      * Update the search query and trigger filtering
-     * This method is called from the Activity when the user types in the SearchView
      *
      * @param query The new search query
      */
@@ -77,6 +92,16 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         performSearch(allProducts, query)
     }
 
+    /**
+     * Update the selected category and trigger filtering
+     *
+     * @param category The selected category name
+     */
+    fun setCategory(category: String) {
+        _selectedCategory.value = category
+        val allProducts = _allProducts.value ?: emptyList()
+        performSearch(allProducts, _searchQuery.value ?: "")
+    }
 
     /**
      * Clear the search query and show all products
@@ -84,5 +109,19 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     fun clearSearch() {
         setSearchQuery("")
     }
-}
 
+    /**
+     * Extract category from product name
+     */
+    private fun extractCategory(productName: String): String {
+        return when {
+            productName.contains("Chair", ignoreCase = true) -> "Chaises"
+            productName.contains("Sofa", ignoreCase = true) ||
+                    productName.contains("Couch", ignoreCase = true) -> "Canapés"
+            productName.contains("Lamp", ignoreCase = true) ||
+                    productName.contains("Light", ignoreCase = true) -> "Éclairage"
+            productName.contains("Table", ignoreCase = true) -> "Tables"
+            else -> "Mobilier"
+        }
+    }
+}
