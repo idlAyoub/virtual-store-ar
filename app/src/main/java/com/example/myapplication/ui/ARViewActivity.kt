@@ -27,6 +27,7 @@ class ARViewActivity : ComponentActivity() {
     
     private var productId: Int = -1
     private var arModelPath: String = ""
+    private var lastTrackingState: com.google.ar.core.TrackingState? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,28 +68,51 @@ class ARViewActivity : ComponentActivity() {
     private fun setupARSceneView() {
         val sceneView = binding.arSceneView
 
-        // Configure AR session
-        sceneView.onSessionConfigChanged = { session, config ->
-            config.planeFindingMode = Config.PlaneFindingMode.HORIZONTAL_AND_VERTICAL
+        // Enable the light estimator – it is OFF by default in SceneView 2.3.3.
+        // Without this, ENVIRONMENTAL_HDR session config has no effect on the
+        // Filament renderer and models appear completely dark.
+        sceneView.lightEstimator?.isEnabled = true
+        sceneView.lightEstimator?.apply {
+            environmentalHdrMainLightDirection = true  // correct sun direction
+            environmentalHdrMainLightIntensity = true  // correct sun intensity
+            environmentalHdrSphericalHarmonics = true  // ambient SH lighting
+            environmentalHdrReflections        = true  // reflection cubemap
+            // environmentalHdrSpecularFilter disabled: runs IBL prefilter every
+            // frame which is the single biggest GPU cost — visually negligible on mobile
+            environmentalHdrSpecularFilter     = false
+        }
+
+        // configureSession fires at the right moment for ENVIRONMENTAL_HDR in 2.3.3
+        sceneView.configureSession { session, config ->
+            config.planeFindingMode    = Config.PlaneFindingMode.HORIZONTAL_AND_VERTICAL
             config.lightEstimationMode = Config.LightEstimationMode.ENVIRONMENTAL_HDR
+            config.depthMode = when {
+                session.isDepthModeSupported(Config.DepthMode.AUTOMATIC) -> Config.DepthMode.AUTOMATIC
+                else -> Config.DepthMode.DISABLED
+            }
         }
 
         sceneView.onSessionFailed = { exception ->
             arViewModel.onModelError("AR Session failed: ${exception.message}")
         }
-        
+
         sceneView.onSessionCreated = {
-             // Session ready, start loading model
-             loadModel()
+            // Session ready, start loading model
+            loadModel()
         }
 
-        sceneView.onSessionUpdated = { session, frame ->
-            if (arViewModel.modelState.value == ARViewModel.ModelState.Loaded && arViewModel.isModelPlaced.value != true) {
-                val state = frame.camera.trackingState
-                if (state == com.google.ar.core.TrackingState.TRACKING) {
-                    arViewModel.updateTrackingStatus("Tracking active. Point at a surface.")
-                } else {
-                    arViewModel.updateTrackingStatus("Searching for surfaces...")
+        sceneView.onSessionUpdated = { _, frame ->
+            // Only update LiveData when tracking state actually changes,
+            // not on every frame (which fires 30-60x per second).
+            val state = frame.camera.trackingState
+            if (state != lastTrackingState) {
+                lastTrackingState = state
+                if (arViewModel.modelState.value == ARViewModel.ModelState.Loaded && arViewModel.isModelPlaced.value != true) {
+                    val msg = if (state == com.google.ar.core.TrackingState.TRACKING)
+                        "Tracking active. Point at a surface."
+                    else
+                        "Searching for surfaces..."
+                    arViewModel.updateTrackingStatus(msg)
                 }
             }
         }
