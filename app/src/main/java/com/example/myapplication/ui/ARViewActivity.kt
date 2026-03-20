@@ -1,6 +1,7 @@
 package com.example.myapplication.ui
 
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -11,6 +12,7 @@ import com.example.myapplication.data.CartRepository
 import com.example.myapplication.databinding.ActivityArViewBinding
 import com.example.myapplication.viewmodel.ARViewModel
 import com.google.ar.core.Config
+import com.google.ar.core.Plane
 import io.github.sceneview.ar.node.AnchorNode
 import io.github.sceneview.math.Position
 import io.github.sceneview.node.ModelNode
@@ -27,6 +29,7 @@ class ARViewActivity : ComponentActivity() {
     
     private var productId: Int = -1
     private var arModelPath: String = ""
+    private var lastTrackingState: com.google.ar.core.TrackingState? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,63 +56,96 @@ class ARViewActivity : ComponentActivity() {
     private fun setupUI() {
         binding.btnCloseAR.setOnClickListener { finish() }
 
-        binding.btnResetModel.setOnClickListener {
-            resetARScene()
+        binding.btnResetModel.setOnClickListener { resetARScene() }
+
+        // Scale buttons: step scale by ±20% each tap
+        binding.btnScaleUp.setOnClickListener {
+            modelNode?.let { it.scale = it.scale * 1.2f }
+        }
+        binding.btnScaleDown.setOnClickListener {
+            modelNode?.let { it.scale = it.scale * 0.8f }
         }
 
         binding.btnAddToCart.setOnClickListener {
-            if (productId != -1) {
-                arViewModel.addToCart(productId, 1)
-            }
+            if (productId != -1) arViewModel.addToCart(productId, 1)
         }
     }
 
     private fun setupARSceneView() {
         val sceneView = binding.arSceneView
 
-        // Configure AR session
-        sceneView.onSessionConfigChanged = { session, config ->
-            config.planeFindingMode = Config.PlaneFindingMode.HORIZONTAL_AND_VERTICAL
+        // Enable the light estimator – it is OFF by default in SceneView 2.3.3.
+        // Without this, ENVIRONMENTAL_HDR session config has no effect on the
+        // Filament renderer and models appear completely dark.
+        sceneView.lightEstimator?.isEnabled = true
+        sceneView.lightEstimator?.apply {
+            environmentalHdrMainLightDirection = true  // correct sun direction
+            environmentalHdrMainLightIntensity = true  // correct sun intensity
+            environmentalHdrSphericalHarmonics = true  // ambient SH lighting
+            environmentalHdrReflections        = true  // reflection cubemap
+            // environmentalHdrSpecularFilter disabled: runs IBL prefilter every
+            // frame which is the single biggest GPU cost — visually negligible on mobile
+            environmentalHdrSpecularFilter     = false
+        }
+
+        // configureSession fires at the right moment for ENVIRONMENTAL_HDR in 2.3.3
+        sceneView.configureSession { session, config ->
+            config.planeFindingMode    = Config.PlaneFindingMode.HORIZONTAL_AND_VERTICAL
             config.lightEstimationMode = Config.LightEstimationMode.ENVIRONMENTAL_HDR
+            config.depthMode = when {
+                session.isDepthModeSupported(Config.DepthMode.AUTOMATIC) -> Config.DepthMode.AUTOMATIC
+                else -> Config.DepthMode.DISABLED
+            }
         }
 
         sceneView.onSessionFailed = { exception ->
             arViewModel.onModelError("AR Session failed: ${exception.message}")
         }
-        
+
         sceneView.onSessionCreated = {
-             // Session ready, start loading model
-             loadModel()
+            // Session ready, start loading model
+            loadModel()
         }
 
-        sceneView.onSessionUpdated = { session, frame ->
-            if (arViewModel.modelState.value == ARViewModel.ModelState.Loaded && arViewModel.isModelPlaced.value != true) {
-                val state = frame.camera.trackingState
-                if (state == com.google.ar.core.TrackingState.TRACKING) {
-                    arViewModel.updateTrackingStatus("Tracking active. Point at a surface.")
-                } else {
-                    arViewModel.updateTrackingStatus("Searching for surfaces...")
+        sceneView.onSessionUpdated = { _, frame ->
+            // Only update LiveData when tracking state actually changes,
+            // not on every frame (which fires 30-60x per second).
+            val state = frame.camera.trackingState
+            if (state != lastTrackingState) {
+                lastTrackingState = state
+                if (arViewModel.modelState.value == ARViewModel.ModelState.Loaded && arViewModel.isModelPlaced.value != true) {
+                    val msg = if (state == com.google.ar.core.TrackingState.TRACKING)
+                        "Tracking active. Point at a surface."
+                    else
+                        "Searching for surfaces..."
+                    arViewModel.updateTrackingStatus(msg)
                 }
             }
         }
 
-        // Tap to place
-        sceneView.setOnTouchListener { _, event ->
-            if (event.action == android.view.MotionEvent.ACTION_UP) {
-                if (arViewModel.modelState.value == ARViewModel.ModelState.Loaded && arViewModel.isModelPlaced.value != true) {
-                    val hitResultList = sceneView.frame?.hitTest(event)
-                    val hitResult = hitResultList?.firstOrNull {
-                        val trackable = it.trackable
-                        trackable is com.google.ar.core.Plane && trackable.isPoseInPolygon(it.hitPose)
-                    }
+    }
+
+    // dispatchTouchEvent is used instead of setOnTouchListener so we can peek at
+    // single-finger taps for placement WITHOUT ever consuming the event.
+    // This keeps SceneView's multi-touch gesture chain (pinch/rotate/drag) fully intact.
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        ev?.let { event ->
+            if (event.action == MotionEvent.ACTION_UP && event.pointerCount == 1) {
+                if (arViewModel.modelState.value == ARViewModel.ModelState.Loaded &&
+                    arViewModel.isModelPlaced.value != true) {
+                    val hitResult = binding.arSceneView.frame
+                        ?.hitTest(event)
+                        ?.firstOrNull {
+                            val trackable = it.trackable
+                            trackable is Plane && trackable.isPoseInPolygon(it.hitPose)
+                        }
                     if (hitResult != null) {
                         placeModel(hitResult.createAnchor())
-                        return@setOnTouchListener true
                     }
                 }
             }
-            false
         }
+        return super.dispatchTouchEvent(ev) // always pass events through — never consume
     }
 
     private fun loadModel() {
@@ -129,9 +165,12 @@ class ARViewActivity : ComponentActivity() {
                         modelInstance = modelInstance,
                         autoAnimate = true,
                         scaleToUnits = 0.5f,
-                        centerOrigin = Position(y = -0.5f) // Center model at origin bottom
+                        centerOrigin = Position(y = -0.5f)
                     ).apply {
-                        isEditable = true // Enable gestures
+                        isEditable = true
+                        isScaleEditable    = true   // pinch-to-scale + Scale +/- buttons
+                        isRotationEditable = true   // two-finger twist
+                        isPositionEditable = false  // drag handled by AnchorNode along detected planes
                     }
                     arViewModel.onModelLoaded()
                 } else {
@@ -144,7 +183,9 @@ class ARViewActivity : ComponentActivity() {
     }
 
     private fun placeModel(anchor: com.google.ar.core.Anchor) {
-        val anchorNode = AnchorNode(binding.arSceneView.engine, anchor)
+        val anchorNode = AnchorNode(binding.arSceneView.engine, anchor).apply {
+            isEditable = true  // required so gestures (pinch/rotate/drag) pass to child ModelNode
+        }
 
         // Attach model as child of the anchor node
         modelNode?.let { anchorNode.addChildNode(it) }
