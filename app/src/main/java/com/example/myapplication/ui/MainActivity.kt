@@ -7,8 +7,10 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -22,11 +24,12 @@ import com.example.myapplication.viewmodel.ProductViewModel
 import kotlinx.coroutines.launch
 
 /**
- * MainActivity - Modern e-commerce catalog with search and grid layout
+ * MainActivity - Modern e-commerce catalog with search, category filter, and grid layout
  *
  * Features:
  * - Header with app title and cart badge
  * - Search bar
+ * - Category filter chips (Tout, Chaises, Canapés, Tables, Éclairage)
  * - 2-column product grid layout
  * - Real-time product filtering
  * - Cart item counter badge
@@ -38,6 +41,8 @@ class MainActivity : ComponentActivity() {
     private lateinit var cartRepository: CartRepository
     private lateinit var tvCartBadge: TextView
 
+    private val categories = listOf("Tout", "Chaises", "Canapés", "Tables", "Éclairage", "Mobilier")
+    private val chipViews = mutableListOf<TextView>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +65,7 @@ class MainActivity : ComponentActivity() {
         // Set up UI components
         setupRecyclerView()
         setupSearchBar()
+        setupCategoryChips()
         setupCartIcon()
         observeProducts()
         observeCartUpdates()
@@ -100,6 +106,67 @@ class MainActivity : ComponentActivity() {
         })
     }
 
+    /**
+     * Set up category filter chips dynamically
+     */
+    private fun setupCategoryChips() {
+        val chipContainer = findViewById<LinearLayout>(R.id.chipContainer)
+
+        categories.forEachIndexed { index, category ->
+            val chip = TextView(this).apply {
+                text = category
+                textSize = 14f
+                setPadding(
+                    resources.getDimensionPixelSize(R.dimen.chip_padding_horizontal),
+                    resources.getDimensionPixelSize(R.dimen.chip_padding_vertical),
+                    resources.getDimensionPixelSize(R.dimen.chip_padding_horizontal),
+                    resources.getDimensionPixelSize(R.dimen.chip_padding_vertical)
+                )
+                minWidth = resources.getDimensionPixelSize(R.dimen.chip_min_width)
+                gravity = android.view.Gravity.CENTER
+                isClickable = true
+                isFocusable = true
+
+                setOnClickListener {
+                    productViewModel.setCategory(category)
+                    updateChipSelection(category)
+                }
+            }
+
+            // Add margin between chips
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            if (index > 0) {
+                params.marginStart = resources.getDimensionPixelSize(R.dimen.chip_gap)
+            }
+            chip.layoutParams = params
+
+            chipViews.add(chip)
+            chipContainer.addView(chip)
+        }
+
+        // Set initial selection
+        updateChipSelection("Tout")
+    }
+
+    /**
+     * Update chip visual selection state
+     */
+    private fun updateChipSelection(selectedCategory: String) {
+        chipViews.forEach { chip ->
+            if (chip.text == selectedCategory) {
+                chip.setBackgroundResource(R.drawable.bg_chip_selected)
+                chip.setTextColor(ContextCompat.getColor(this, R.color.color_white))
+                chip.setTypeface(chip.typeface, android.graphics.Typeface.BOLD)
+            } else {
+                chip.setBackgroundResource(R.drawable.bg_chip_unselected)
+                chip.setTextColor(ContextCompat.getColor(this, R.color.color_text_primary))
+                chip.setTypeface(chip.typeface, android.graphics.Typeface.NORMAL)
+            }
+        }
+    }
 
     /**
      * Set up cart icon and badge

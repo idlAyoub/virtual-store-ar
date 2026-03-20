@@ -58,9 +58,8 @@
             android:id="@+id/ivModelStatus"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/ic_camera"
+            android:src="@drawable/ic_ar"
             android:contentDescription="Model Status"
-            app:tint="@color/color_primary"
             android:visibility="gone" />
 
     </LinearLayout>
@@ -80,9 +79,8 @@
         <ImageView
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:src="@drawable/ic_camera"
-            android:contentDescription="Find Surface"
-            app:tint="@color/color_white" />
+            android:src="@drawable/ic_ar"
+            android:contentDescription="Find Surface" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -216,9 +214,8 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_camera"
-                    android:contentDescription="Rotate"
-                    app:tint="@color/color_white" />
+                    android:src="@drawable/ic_ar"
+                    android:contentDescription="Rotate" />
 
                 <TextView
                     android:layout_width="wrap_content"

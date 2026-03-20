@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="@dimen/spacing_screen"
+        android:paddingHorizontal="@dimen/spacing_screen"
+        android:paddingVertical="16dp"
         android:background="@color/color_card"
         android:elevation="2dp">
 
@@ -31,9 +32,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="VirtualStore"
-                android:textColor="@color/color_text_primary"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:textColor="@color/color_primary"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:letterSpacing="-0.02" />
 
             <!-- Subtitle: Smart Shopping AR -->
             <TextView
@@ -42,7 +44,7 @@
                 android:text="Smart Shopping AR"
                 android:textColor="@color/color_text_secondary"
                 android:textSize="12sp"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="2dp" />
 
         </LinearLayout>
 
@@ -66,13 +68,15 @@
             <!-- Cart Badge showing number of items -->
             <TextView
                 android:id="@+id/tvCartBadge"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_gravity="top|end"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
                 android:background="@drawable/badge_background_round"
                 android:text="0"
                 android:textColor="@color/color_white"
-                android:textSize="11sp"
+                android:textSize="10sp"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:visibility="gone" />
@@ -85,27 +89,60 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/spacing_screen"
+        android:orientation="vertical"
         android:background="@color/color_card"
-        android:gravity="center_vertical"
         android:elevation="1dp">
 
-        <!-- Rounded Search Bar -->
-        <EditText
-            android:id="@+id/etSearch"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:hint="Rechercher un produit..."
-            android:background="@drawable/bg_search_bar"
-            android:textColor="@color/color_text_primary"
-            android:textColorHint="@color/color_text_tertiary"
-            android:textSize="14sp" />
+        <!-- Search Bar Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/spacing_screen"
+            android:paddingTop="4dp"
+            android:paddingBottom="12dp"
+            android:gravity="center_vertical">
 
+            <!-- Rounded Search Bar -->
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:hint="Rechercher un produit..."
+                android:background="@drawable/bg_search_bar"
+                android:textColor="@color/color_text_primary"
+                android:textColorHint="@color/color_text_tertiary"
+                android:textSize="14sp"
+                android:drawableStart="@drawable/ic_filter"
+                android:drawablePadding="12dp"
+                android:inputType="text"
+                android:maxLines="1" />
 
+        </LinearLayout>
+
+        <!-- Category Filter Chips -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:paddingBottom="12dp"
+            android:clipToPadding="false">
+
+            <LinearLayout
+                android:id="@+id/chipContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/spacing_screen"
+                android:gravity="center_vertical">
+
+                <!-- Chips are added programmatically -->
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
 
     </LinearLayout>
 
@@ -118,7 +155,7 @@
         android:layout_weight="1"
         android:background="@color/color_background"
         android:clipToPadding="false"
-        android:padding="@dimen/spacing_card"
+        android:padding="10dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2" />
 
