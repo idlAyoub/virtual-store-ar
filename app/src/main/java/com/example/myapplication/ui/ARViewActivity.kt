@@ -1,6 +1,7 @@
 package com.example.myapplication.ui
 
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -11,6 +12,7 @@ import com.example.myapplication.data.CartRepository
 import com.example.myapplication.databinding.ActivityArViewBinding
 import com.example.myapplication.viewmodel.ARViewModel
 import com.google.ar.core.Config
+import com.google.ar.core.Plane
 import io.github.sceneview.ar.node.AnchorNode
 import io.github.sceneview.math.Position
 import io.github.sceneview.node.ModelNode
@@ -54,14 +56,18 @@ class ARViewActivity : ComponentActivity() {
     private fun setupUI() {
         binding.btnCloseAR.setOnClickListener { finish() }
 
-        binding.btnResetModel.setOnClickListener {
-            resetARScene()
+        binding.btnResetModel.setOnClickListener { resetARScene() }
+
+        // Scale buttons: step scale by ±20% each tap
+        binding.btnScaleUp.setOnClickListener {
+            modelNode?.let { it.scale = it.scale * 1.2f }
+        }
+        binding.btnScaleDown.setOnClickListener {
+            modelNode?.let { it.scale = it.scale * 0.8f }
         }
 
         binding.btnAddToCart.setOnClickListener {
-            if (productId != -1) {
-                arViewModel.addToCart(productId, 1)
-            }
+            if (productId != -1) arViewModel.addToCart(productId, 1)
         }
     }
 
@@ -117,23 +123,29 @@ class ARViewActivity : ComponentActivity() {
             }
         }
 
-        // Tap to place
-        sceneView.setOnTouchListener { _, event ->
-            if (event.action == android.view.MotionEvent.ACTION_UP) {
-                if (arViewModel.modelState.value == ARViewModel.ModelState.Loaded && arViewModel.isModelPlaced.value != true) {
-                    val hitResultList = sceneView.frame?.hitTest(event)
-                    val hitResult = hitResultList?.firstOrNull {
-                        val trackable = it.trackable
-                        trackable is com.google.ar.core.Plane && trackable.isPoseInPolygon(it.hitPose)
-                    }
+    }
+
+    // dispatchTouchEvent is used instead of setOnTouchListener so we can peek at
+    // single-finger taps for placement WITHOUT ever consuming the event.
+    // This keeps SceneView's multi-touch gesture chain (pinch/rotate/drag) fully intact.
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        ev?.let { event ->
+            if (event.action == MotionEvent.ACTION_UP && event.pointerCount == 1) {
+                if (arViewModel.modelState.value == ARViewModel.ModelState.Loaded &&
+                    arViewModel.isModelPlaced.value != true) {
+                    val hitResult = binding.arSceneView.frame
+                        ?.hitTest(event)
+                        ?.firstOrNull {
+                            val trackable = it.trackable
+                            trackable is Plane && trackable.isPoseInPolygon(it.hitPose)
+                        }
                     if (hitResult != null) {
                         placeModel(hitResult.createAnchor())
-                        return@setOnTouchListener true
                     }
                 }
             }
-            false
         }
+        return super.dispatchTouchEvent(ev) // always pass events through — never consume
     }
 
     private fun loadModel() {
@@ -153,9 +165,12 @@ class ARViewActivity : ComponentActivity() {
                         modelInstance = modelInstance,
                         autoAnimate = true,
                         scaleToUnits = 0.5f,
-                        centerOrigin = Position(y = -0.5f) // Center model at origin bottom
+                        centerOrigin = Position(y = -0.5f)
                     ).apply {
-                        isEditable = true // Enable gestures
+                        isEditable = true
+                        isScaleEditable    = true   // pinch-to-scale + Scale +/- buttons
+                        isRotationEditable = true   // two-finger twist
+                        isPositionEditable = false  // drag handled by AnchorNode along detected planes
                     }
                     arViewModel.onModelLoaded()
                 } else {
@@ -168,7 +183,9 @@ class ARViewActivity : ComponentActivity() {
     }
 
     private fun placeModel(anchor: com.google.ar.core.Anchor) {
-        val anchorNode = AnchorNode(binding.arSceneView.engine, anchor)
+        val anchorNode = AnchorNode(binding.arSceneView.engine, anchor).apply {
+            isEditable = true  // required so gestures (pinch/rotate/drag) pass to child ModelNode
+        }
 
         // Attach model as child of the anchor node
         modelNode?.let { anchorNode.addChildNode(it) }
