@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    app:cardCornerRadius="@dimen/radius_card"
+    app:cardElevation="2dp"
+    app:strokeWidth="0dp"
+    app:cardBackgroundColor="@color/color_card">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Image Container with AR Badge -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/product_image_height"
+            android:background="@color/color_secondary_bg">
+
+            <!-- Product Image -->
+            <ImageView
+                android:id="@+id/ivProductImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Product Image"
+                android:scaleType="centerCrop" />
+
+            <!-- AR Badge (top-left corner) -->
+            <LinearLayout
+                android:id="@+id/arBadgeContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_ar_badge"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="5dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_ar"
+                    android:contentDescription="AR" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AR"
+                    android:textColor="@color/color_white"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="4dp" />
+
+            </LinearLayout>
+
+            <!-- Favorite Button (top-right corner) -->
+            <ImageView
+                android:id="@+id/btnFavorite"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="top|end"
+                android:layout_margin="10dp"
+                android:padding="4dp"
+                android:src="@drawable/ic_heart_outline"
+                app:tint="@color/color_text_tertiary"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="Favorite" />
+
+        </FrameLayout>
+
+        <!-- Content Container -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/card_content_padding">
+
+            <!-- Category Label -->
+            <TextView
+                android:id="@+id/tvCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mobilier"
+                android:textColor="@color/color_primary"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:background="@drawable/bg_category_label"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp" />
+
+            <!-- Product Name -->
+            <TextView
+                android:id="@+id/tvProductName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="Product Name"
+                android:textColor="@color/color_text_primary"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:lineSpacingMultiplier="1.1" />
+
+            <!-- Price and Button Container -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp">
+
+                <!-- Product Price -->
+                <TextView
+                    android:id="@+id/tvProductPrice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="$0.00"
+                    android:textColor="@color/color_primary"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <!-- Circular Add to Cart Button -->
+                <FrameLayout
+                    android:id="@+id/btnAddToCart"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_add_cart_button"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="+"
+                        android:textColor="@color/color_white"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
