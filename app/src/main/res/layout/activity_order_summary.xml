@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_card"
+    android:background="@color/color_background"
     android:fillViewport="true"
     tools:context=".ui.OrderSummaryActivity">
 
@@ -13,13 +13,13 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="@dimen/spacing_section">
+        android:paddingHorizontal="24dp">
 
-        <!-- Success Circle -->
+        <!-- Success circle with glow ring -->
         <FrameLayout
-            android:layout_width="@dimen/success_circle_size"
-            android:layout_height="@dimen/success_circle_size"
-            android:layout_marginTop="48dp">
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="64dp">
 
             <View
                 android:layout_width="match_parent"
@@ -27,11 +27,11 @@
                 android:background="@drawable/success_circle_background" />
 
             <ImageView
-                android:layout_width="@dimen/checkmark_size"
-                android:layout_height="@dimen/checkmark_size"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_check"
-                app:tint="@color/color_white" />
+                app:tint="@color/color_on_primary" />
 
         </FrameLayout>
 
@@ -39,43 +39,42 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_section"
+            android:layout_marginTop="28dp"
             android:text="@string/order_confirmed"
             android:textColor="@color/color_text_primary"
-            android:textSize="24sp"
+            android:textSize="26sp"
             android:textStyle="bold" />
 
         <!-- Thank You -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:text="@string/thank_you"
             android:textColor="@color/color_text_secondary"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:gravity="center" />
 
         <!-- Order Total Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginHorizontal="8dp"
-            app:cardBackgroundColor="@color/color_background"
-            app:cardCornerRadius="@dimen/radius_card"
+            android:layout_marginTop="36dp"
+            app:cardBackgroundColor="@color/color_card"
+            app:cardCornerRadius="16dp"
             app:cardElevation="0dp"
-            app:strokeColor="@color/color_divider"
+            app:strokeColor="@color/color_stroke_accent"
             app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/spacing_card">
+                android:padding="20dp">
 
-                <!-- Total Row -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/summary_row_height"
+                    android:layout_height="52dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -93,8 +92,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="$0.00"
-                        android:textColor="@color/color_primary"
-                        android:textSize="22sp"
+                        android:textColor="@color/color_accent_gold"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -107,20 +106,16 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnContinueShopping"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height_primary"
-            android:layout_marginTop="32dp"
-            android:layout_marginHorizontal="8dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="28dp"
             android:backgroundTint="@color/color_primary"
             android:text="@string/continue_shopping"
-            android:textColor="@color/color_white"
+            android:textColor="@color/color_on_primary"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:cornerRadius="@dimen/radius_pill" />
+            app:cornerRadius="28dp" />
 
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="32dp" />
+        <View android:layout_width="match_parent" android:layout_height="40dp" />
 
     </LinearLayout>
 

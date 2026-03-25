@@ -231,12 +231,10 @@ class ARViewActivity : ComponentActivity() {
 
         arViewModel.isModelPlaced.observe(this) { isPlaced ->
             if (isPlaced) {
-                binding.layoutPlacementGuide.visibility = View.GONE
-                binding.layoutTrackingStatus.visibility = View.GONE
+                binding.tvTrackingStatus.visibility = View.GONE
                 binding.layoutControlPanel.visibility = View.VISIBLE
             } else {
-                binding.layoutPlacementGuide.visibility = View.VISIBLE
-                binding.layoutTrackingStatus.visibility = View.VISIBLE
+                binding.tvTrackingStatus.visibility = View.VISIBLE
                 binding.layoutControlPanel.visibility = View.GONE
             }
         }
