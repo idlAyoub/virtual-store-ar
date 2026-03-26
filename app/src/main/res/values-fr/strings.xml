@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Magasin Virtuel</string>
+    <string name="search_hint">Rechercher des produits...</string>
+    <string name="product_details">Détails du Produit</string>
+    <string name="in_stock">En Stock</string>
+    <string name="out_of_stock">Rupture de Stock</string>
+    <string name="description">Description</string>
+    <string name="add_to_cart">Ajouter au Panier</string>
+    <string name="order_confirmed">Commande Confirmée!</string>
+    <string name="thank_you">Merci pour votre achat</string>
+    <string name="item_total">Total des articles</string>
+    <string name="tax">Taxes</string>
+    <string name="discount">Réduction</string>
+    <string name="total">Total</string>
+    <string name="continue_shopping">Continuer Vos Achats</string>
+    <string name="view_order_details">Voir les détails de la commande</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Paramètres</string>
+    <string name="language_title">Langue</string>
+    <string name="select_language">Sélectionner la langue</string>
+    <string name="dark_mode_title">Mode Sombre</string>
+    <string name="about_title">À propos</string>
+    <string name="about_subtitle">MagasinVirtuel v1.0</string>
+    <string name="cancel">Annuler</string>
+    <string name="english">Anglais</string>
+    <string name="french">Français</string>
+    <string name="arabic">Arabe</string>
+</resources>

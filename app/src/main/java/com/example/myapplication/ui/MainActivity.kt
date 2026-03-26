@@ -45,6 +45,16 @@ class MainActivity : ComponentActivity() {
     private val chipViews = mutableListOf<TextView>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+<<<<<<< HEAD
+        val settingsPrefs = getSharedPreferences("settings_prefs", android.content.Context.MODE_PRIVATE)
+        val isDarkMode = settingsPrefs.getBoolean("dark_mode_enabled", false)
+        androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
+            if (isDarkMode) androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+            else androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+        )
+
+=======
+>>>>>>> origin/main
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -69,6 +79,33 @@ class MainActivity : ComponentActivity() {
         setupCartIcon()
         observeProducts()
         observeCartUpdates()
+<<<<<<< HEAD
+
+        // Setup Drawer Layout
+        val drawerLayout = findViewById<androidx.drawerlayout.widget.DrawerLayout>(R.id.drawerLayout)
+        val navigationView = findViewById<com.google.android.material.navigation.NavigationView>(R.id.navigationView)
+
+        findViewById<View>(R.id.btnMenu).setOnClickListener {
+            drawerLayout.openDrawer(androidx.core.view.GravityCompat.START)
+        }
+
+        navigationView.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_favorites -> {
+                    startActivity(Intent(this, FavoritesActivity::class.java))
+                    drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
+                    true
+                }
+                R.id.nav_settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
+                    true
+                }
+                else -> false
+            }
+        }
+=======
+>>>>>>> origin/main
     }
 
     /**
@@ -82,6 +119,12 @@ class MainActivity : ComponentActivity() {
                 lifecycleScope.launch {
                     cartRepository.addToCart(product.id, 1)
                 }
+<<<<<<< HEAD
+            },
+            onFavoriteClick = { product ->
+                productViewModel.toggleFavorite(product)
+=======
+>>>>>>> origin/main
             }
         )
         rvProducts.adapter = productAdapter
@@ -185,8 +228,23 @@ class MainActivity : ComponentActivity() {
      * Observe filtered products from ViewModel
      */
     private fun observeProducts() {
+<<<<<<< HEAD
+        val rvProducts = findViewById<RecyclerView>(R.id.rvProducts)
+        val layoutEmptyState = findViewById<View>(R.id.layoutEmptyState)
+        
         productViewModel.filteredProducts.observe(this) { filteredProducts ->
             productAdapter.updateProductList(filteredProducts)
+            if (filteredProducts.isEmpty()) {
+                rvProducts.visibility = View.GONE
+                layoutEmptyState.visibility = View.VISIBLE
+            } else {
+                rvProducts.visibility = View.VISIBLE
+                layoutEmptyState.visibility = View.GONE
+            }
+=======
+        productViewModel.filteredProducts.observe(this) { filteredProducts ->
+            productAdapter.updateProductList(filteredProducts)
+>>>>>>> origin/main
         }
     }
 

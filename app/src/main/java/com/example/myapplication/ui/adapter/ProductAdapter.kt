@@ -19,7 +19,12 @@ import com.example.myapplication.databinding.ItemProductBinding
  */
 class ProductAdapter(
     private var productList: List<Product> = emptyList(),
+<<<<<<< HEAD
+    private val onAddToCartClick: ((Product) -> Unit)? = null,
+    private val onFavoriteClick: ((Product) -> Unit)? = null
+=======
     private val onAddToCartClick: ((Product) -> Unit)? = null
+>>>>>>> origin/main
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     inner class ProductViewHolder(
@@ -33,6 +38,12 @@ class ProductAdapter(
 
             // Get the drawable resource ID from the image name
             val context = binding.root.context
+<<<<<<< HEAD
+            
+            if (product.imageResource.startsWith("http")) {
+                Glide.with(context)
+                    .load(product.imageResource)
+=======
             val resourceId = context.resources.getIdentifier(
                 product.imageResource,
                 "drawable",
@@ -43,16 +54,41 @@ class ProductAdapter(
             if (resourceId != 0) {
                 Glide.with(context)
                     .load(resourceId)
+>>>>>>> origin/main
                     .placeholder(R.drawable.ic_launcher_background)
                     .error(R.drawable.ic_launcher_background)
                     .centerCrop()
                     .into(binding.ivProductImage)
             } else {
+<<<<<<< HEAD
+                val resourceId = context.resources.getIdentifier(
+                    product.imageResource,
+                    "drawable",
+                    context.packageName
+                )
+
+                // Load image using Glide with resource ID
+                if (resourceId != 0) {
+                    Glide.with(context)
+                        .load(resourceId)
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .error(R.drawable.ic_launcher_background)
+                        .centerCrop()
+                        .into(binding.ivProductImage)
+                } else {
+                    // If resource not found, show placeholder
+                    Glide.with(context)
+                        .load(R.drawable.ic_launcher_background)
+                        .centerCrop()
+                        .into(binding.ivProductImage)
+                }
+=======
                 // If resource not found, show placeholder
                 Glide.with(context)
                     .load(R.drawable.ic_launcher_background)
                     .centerCrop()
                     .into(binding.ivProductImage)
+>>>>>>> origin/main
             }
 
             // Show/hide AR badge based on AR model availability
@@ -70,6 +106,22 @@ class ProductAdapter(
                 binding.arBadgeContainer.visibility = android.view.View.GONE
             }
 
+<<<<<<< HEAD
+            // Favorite button state and click listener
+            if (product.isFavorite) {
+                binding.btnFavorite.setImageResource(R.drawable.ic_heart_filled)
+                binding.btnFavorite.setColorFilter(androidx.core.content.ContextCompat.getColor(context, R.color.color_primary))
+            } else {
+                binding.btnFavorite.setImageResource(R.drawable.ic_heart_outline)
+                binding.btnFavorite.setColorFilter(androidx.core.content.ContextCompat.getColor(context, R.color.color_text_tertiary))
+            }
+
+            binding.btnFavorite.setOnClickListener {
+                onFavoriteClick?.invoke(product)
+            }
+
+=======
+>>>>>>> origin/main
             // Card click → ProductDetailActivity
             binding.root.setOnClickListener {
                 val context = binding.root.context

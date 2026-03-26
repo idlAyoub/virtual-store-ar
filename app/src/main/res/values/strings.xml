@@ -1,4 +1,10 @@
 <resources>
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+    <string name="app_name">My Application</string>
+=======
+=======
+>>>>>>> origin/main
     <string name="app_name">Virtual Store</string>
 
     <!-- Catalog Screen -->
@@ -20,4 +26,20 @@
     <string name="total">Total</string>
     <string name="continue_shopping">Continue Shopping</string>
     <string name="view_order_details">View Order Details</string>
+<<<<<<< HEAD
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Settings</string>
+    <string name="language_title">Language</string>
+    <string name="select_language">Select Language</string>
+    <string name="dark_mode_title">Dark Mode</string>
+    <string name="about_title">About</string>
+    <string name="about_subtitle">VirtualStore v1.0</string>
+    <string name="cancel">Cancel</string>
+    <string name="english">English</string>
+    <string name="french">French</string>
+    <string name="arabic">Arabic</string>
+>>>>>>> Stashed changes
+=======
+>>>>>>> origin/main
 </resources>
