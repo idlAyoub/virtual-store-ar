@@ -2,7 +2,10 @@ package com.example.myapplication.ui
 
 import android.content.Intent
 import android.os.Bundle
+<<<<<<< HEAD
 import android.util.Log
+=======
+>>>>>>> origin/main
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -40,6 +43,7 @@ class ProductDetailActivity : ComponentActivity() {
         db.productDao().getProductById(productId).observe(this) { product ->
             if (product == null) return@observe
 
+<<<<<<< HEAD
             // Image - Check if it's HTTP URL or drawable resource
             Log.d("ProductDetail", "Loading image: ${product.imageResource}")
             val imageView = findViewById<android.widget.ImageView>(R.id.ivProductDetail)
@@ -77,6 +81,27 @@ class ProductDetailActivity : ComponentActivity() {
                         .centerCrop()
                         .into(imageView)
                 }
+=======
+            // Image - Get drawable resource ID from image name
+            val resourceId = this.resources.getIdentifier(
+                product.imageResource,
+                "drawable",
+                this.packageName
+            )
+
+            if (resourceId != 0) {
+                Glide.with(this)
+                    .load(resourceId)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_background)
+                    .centerCrop()
+                    .into(findViewById(R.id.ivProductDetail))
+            } else {
+                Glide.with(this)
+                    .load(R.drawable.ic_launcher_background)
+                    .centerCrop()
+                    .into(findViewById(R.id.ivProductDetail))
+>>>>>>> origin/main
             }
 
             // Name & Price

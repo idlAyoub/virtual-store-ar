@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Hero Image with Back Button -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:background="@color/color_secondary_bg">
+
+            <ImageView
+                android:id="@+id/ivProductDetail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Product Image"
+                android:scaleType="centerCrop" />
+
+            <!-- Back Button -->
+            <FrameLayout
+                android:id="@+id/btnBack"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/bg_header_button"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_back"
+                    android:contentDescription="Back" />
+
+            </FrameLayout>
+
+        </FrameLayout>
+
+        <!-- Content Card -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-24dp"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/color_card">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_section">
+
+                <!-- Product Name -->
+                <TextView
+                    android:id="@+id/tvDetailName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_text_primary"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:lineSpacingMultiplier="1.1" />
+
+                <!-- Price Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:id="@+id/tvDetailPrice"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/color_primary"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvDetailStock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="20dp"
+                    android:background="@color/color_divider" />
+
+                <!-- Description Label -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+                    android:textColor="@color/color_text_primary"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <!-- Description Text -->
+                <TextView
+                    android:id="@+id/tvDetailDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:lineSpacingMultiplier="1.6"
+                    android:textColor="@color/color_text_secondary"
+                    android:textSize="14sp" />
+
+                <!-- AR Section -->
+                <LinearLayout
+                    android:id="@+id/arSection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/spacing_section"
+                    android:visibility="gone">
+
+                    <!-- AR Card -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/ar_card_height"
+                        app:cardCornerRadius="@dimen/radius_card"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="@color/color_badge_bg">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="20dp">
+
+                            <!-- AR Icon -->
+                            <FrameLayout
+                                android:layout_width="56dp"
+                                android:layout_height="56dp"
+                                android:background="@drawable/bg_ar_badge">
+
+                                <ImageView
+                                    android:layout_width="32dp"
+                                    android:layout_height="32dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_ar"
+                                    android:contentDescription="AR" />
+
+                            </FrameLayout>
+
+                            <!-- AR Text -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:layout_marginStart="16dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="View in Your Space"
+                                    android:textColor="@color/color_text_primary"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="See how it looks in your room with AR"
+                                    android:textColor="@color/color_text_secondary"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- AR Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnViewInAR"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/button_height_secondary"
+                        android:layout_marginTop="12dp"
+                        android:backgroundTint="@color/color_primary"
+                        android:text="View in AR"
+                        android:textColor="@color/color_white"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="@dimen/radius_pill"
+                        app:icon="@drawable/ic_ar"
+                        app:iconTint="@color/color_white"
+                        app:iconGravity="textStart" />
+
+                </LinearLayout>
+
+                <!-- Add to Cart Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDetailAddToCart"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height_primary"
+                    android:layout_marginTop="@dimen/spacing_section"
+                    android:backgroundTint="@color/color_primary"
+                    android:text="Add to Cart"
+                    android:textColor="@color/color_white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="@dimen/radius_pill"
+                    app:icon="@drawable/ic_cart"
+                    app:iconTint="@color/color_white"
+                    app:iconGravity="textStart" />
+
+                <!-- Bottom spacing -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</ScrollView>

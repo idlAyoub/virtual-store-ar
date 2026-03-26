@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.myapplication">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Required for internet access (Glide loading from URLs) -->
+    <!-- Internet access (Glide loading from URLs) -->
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- Optional but recommended for network state monitoring -->
+    <!-- Network state monitoring -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     
     <!-- Required for ARCore / ARSceneView -->
@@ -25,8 +24,14 @@
         android:theme="@style/Theme.MyApplication"
         android:localeConfig="@xml/locales_config">
 
+        <!-- ARCore Optional Metadata -->
+        <meta-data
+            android:name="com.google.ar.core"
+            android:value="optional" />
+
+        <!-- Launcher -->
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.myapplication.ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,8 +39,11 @@
             </intent-filter>
         </activity>
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> origin/main
         <!-- Product Detail -->
         <activity
             android:name="com.example.myapplication.ui.ProductDetailActivity"
@@ -58,6 +66,7 @@
             android:name="com.example.myapplication.ui.CartActivity"
             android:exported="false" />
 
+<<<<<<< HEAD
         <!-- Favorites Activity -->
         <activity
             android:name="com.example.myapplication.ui.FavoritesActivity"
@@ -71,6 +80,8 @@
             android:parentActivityName="com.example.myapplication.ui.MainActivity" />
 
 >>>>>>> Stashed changes
+=======
+>>>>>>> origin/main
     </application>
 
 </manifest>

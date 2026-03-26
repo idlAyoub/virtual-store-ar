@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Design Token Dimensions -->
+    <dimen name="radius_pill">50dp</dimen>
+    <dimen name="radius_card">16dp</dimen>
+    <dimen name="radius_card_large">20dp</dimen>
+    <dimen name="button_height_primary">56dp</dimen>
+    <dimen name="button_height_secondary">52dp</dimen>
+    <dimen name="spacing_screen">20dp</dimen>
+    <dimen name="spacing_card">16dp</dimen>
+    <dimen name="spacing_section">24dp</dimen>
+
+    <!-- Additional Dimensions -->
+    <dimen name="button_back_size">36dp</dimen>
+    <dimen name="button_filter_size">40dp</dimen>
+    <dimen name="search_bar_height">48dp</dimen>
+    <dimen name="chip_height">40dp</dimen>
+    <dimen name="chip_gap">8dp</dimen>
+    <dimen name="chip_min_width">72dp</dimen>
+    <dimen name="chip_padding_horizontal">16dp</dimen>
+    <dimen name="chip_padding_vertical">8dp</dimen>
+    <dimen name="product_image_height">170dp</dimen>
+    <dimen name="card_content_padding">14dp</dimen>
+    <dimen name="button_cart_height">40dp</dimen>
+    <dimen name="hero_height">280dp</dimen>
+    <dimen name="disc_diameter">200dp</dimen>
+    <dimen name="hero_image_width">220dp</dimen>
+    <dimen name="hero_image_height">240dp</dimen>
+    <dimen name="card_overlap">24dp</dimen>
+    <dimen name="swatch_diameter">28dp</dimen>
+    <dimen name="swatch_gap">12dp</dimen>
+    <dimen name="cart_item_image_size">72dp</dimen>
+    <dimen name="radio_button_size">20dp</dimen>
+    <dimen name="stepper_button_size">28dp</dimen>
+    <dimen name="stepper_value_width">36dp</dimen>
+    <dimen name="promo_height">48dp</dimen>
+    <dimen name="summary_row_height">36dp</dimen>
+    <dimen name="success_circle_size">96dp</dimen>
+    <dimen name="checkmark_size">48dp</dimen>
+    <dimen name="ar_card_height">140dp</dimen>
+    <dimen name="ar_placeholder_image_size">50dp</dimen>
+    <dimen name="gesture_icon_size">24dp</dimen>
+</resources>

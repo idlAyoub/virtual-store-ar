@@ -45,6 +45,7 @@ class MainActivity : ComponentActivity() {
     private val chipViews = mutableListOf<TextView>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+<<<<<<< HEAD
         val settingsPrefs = getSharedPreferences("settings_prefs", android.content.Context.MODE_PRIVATE)
         val isDarkMode = settingsPrefs.getBoolean("dark_mode_enabled", false)
         androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
@@ -52,6 +53,8 @@ class MainActivity : ComponentActivity() {
             else androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
         )
 
+=======
+>>>>>>> origin/main
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -76,6 +79,7 @@ class MainActivity : ComponentActivity() {
         setupCartIcon()
         observeProducts()
         observeCartUpdates()
+<<<<<<< HEAD
 
         // Setup Drawer Layout
         val drawerLayout = findViewById<androidx.drawerlayout.widget.DrawerLayout>(R.id.drawerLayout)
@@ -100,6 +104,8 @@ class MainActivity : ComponentActivity() {
                 else -> false
             }
         }
+=======
+>>>>>>> origin/main
     }
 
     /**
@@ -113,9 +119,12 @@ class MainActivity : ComponentActivity() {
                 lifecycleScope.launch {
                     cartRepository.addToCart(product.id, 1)
                 }
+<<<<<<< HEAD
             },
             onFavoriteClick = { product ->
                 productViewModel.toggleFavorite(product)
+=======
+>>>>>>> origin/main
             }
         )
         rvProducts.adapter = productAdapter
@@ -219,6 +228,7 @@ class MainActivity : ComponentActivity() {
      * Observe filtered products from ViewModel
      */
     private fun observeProducts() {
+<<<<<<< HEAD
         val rvProducts = findViewById<RecyclerView>(R.id.rvProducts)
         val layoutEmptyState = findViewById<View>(R.id.layoutEmptyState)
         
@@ -231,6 +241,10 @@ class MainActivity : ComponentActivity() {
                 rvProducts.visibility = View.VISIBLE
                 layoutEmptyState.visibility = View.GONE
             }
+=======
+        productViewModel.filteredProducts.observe(this) { filteredProducts ->
+            productAdapter.updateProductList(filteredProducts)
+>>>>>>> origin/main
         }
     }
 

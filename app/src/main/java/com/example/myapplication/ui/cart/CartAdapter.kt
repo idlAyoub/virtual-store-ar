@@ -87,15 +87,27 @@ class CartAdapter(
             btnIncrease.alpha = if (btnIncrease.isEnabled) 1f else 0.35f
 
             // Product image via Glide
+<<<<<<< HEAD
             // Check if it's HTTP URL or drawable resource
             if (product.imageResource.startsWith("http")) {
                 // Load from HTTP URL
                 Glide.with(itemView.context)
                     .load(product.imageResource)
+=======
+            // Image names are stored as resource names (e.g. "img_product_1").
+            // We resolve them to a drawable resource ID at runtime.
+            val resId = itemView.context.resources.getIdentifier(
+                product.imageResource, "drawable", itemView.context.packageName
+            )
+            if (resId != 0) {
+                Glide.with(itemView.context)
+                    .load(resId)
+>>>>>>> origin/main
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .centerCrop()
                     .into(ivProductImage)
             } else {
+<<<<<<< HEAD
                 // Image names are stored as resource names (e.g. "img_product_1").
                 // We resolve them to a drawable resource ID at runtime.
                 val resId = itemView.context.resources.getIdentifier(
@@ -113,6 +125,12 @@ class CartAdapter(
                         .load(R.color.color_secondary_bg)
                         .into(ivProductImage)
                 }
+=======
+                // Fallback placeholder when resource not found
+                Glide.with(itemView.context)
+                    .load(R.color.color_secondary_bg)
+                    .into(ivProductImage)
+>>>>>>> origin/main
             }
 
             // ── Click Listeners ────────────────────────────────────────────────

@@ -111,6 +111,7 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     }
 
     /**
+<<<<<<< HEAD
      * Toggle the favorite status of a product
      */
     fun toggleFavorite(product: Product) {
@@ -120,6 +121,8 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     }
 
     /**
+=======
+>>>>>>> origin/main
      * Extract category from product name
      */
     private fun extractCategory(productName: String): String {
