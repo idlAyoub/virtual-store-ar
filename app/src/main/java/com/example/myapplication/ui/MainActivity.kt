@@ -105,23 +105,11 @@ class MainActivity : ComponentActivity() {
 
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    // Already on home
-                }
-                R.id.nav_products -> {
-                    // Scroll to top or just close drawer
-                }
-                R.id.nav_categories -> {
-                    // Logic to show categories or scroll to chips
-                }
                 R.id.nav_favorites -> {
                     startActivity(Intent(this, FavoritesActivity::class.java))
                 }
                 R.id.nav_orders -> {
-                    startActivity(Intent(this, OrderSummaryActivity::class.java))
-                }
-                R.id.nav_settings -> {
-                    Toast.makeText(this, "Settings bientôt disponible", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, CartActivity::class.java))
                 }
             }
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -367,12 +355,27 @@ class MainActivity : ComponentActivity() {
     }
 
     /**
-     * Update cart badge with item count
+     * Update cart badge with item count and pulse animation
      */
     private fun updateCartBadge(count: Int) {
+        val previousVisibility = tvCartBadge.visibility
         if (count > 0) {
             tvCartBadge.text = count.toString()
             tvCartBadge.visibility = View.VISIBLE
+            
+            // Animation: Pop pulse when count changes or badge first appears
+            tvCartBadge.animate()
+                .scaleX(1.4f)
+                .scaleY(1.4f)
+                .setDuration(150)
+                .withEndAction {
+                    tvCartBadge.animate()
+                        .scaleX(1.0f)
+                        .scaleY(1.0f)
+                        .setDuration(150)
+                        .start()
+                }
+                .start()
         } else {
             tvCartBadge.visibility = View.GONE
         }

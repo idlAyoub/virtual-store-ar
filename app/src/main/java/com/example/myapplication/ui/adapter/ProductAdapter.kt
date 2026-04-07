@@ -5,12 +5,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import androidx.recyclerview.widget.DiffUtil
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.myapplication.ui.ProductDetailActivity
 import com.example.myapplication.R
 import com.example.myapplication.data.Product
 import com.example.myapplication.databinding.ItemProductBinding
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.graphics.Color
 
 /**
  * ProductAdapter — 2-column grid of product cards.
@@ -41,18 +45,20 @@ class ProductAdapter(
                 context.packageName
             )
 
-            // Load image using Glide with resource ID
+            // Load image using Glide with resource ID and optimized cache
             if (resourceId != 0) {
-                Glide.with(context)
+                com.bumptech.glide.Glide.with(context)
                     .load(resourceId)
                     .placeholder(R.drawable.ic_launcher_background)
                     .error(R.drawable.ic_launcher_background)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .centerCrop()
                     .into(binding.ivProductImage)
             } else {
                 // If resource not found, show placeholder
-                Glide.with(context)
+                com.bumptech.glide.Glide.with(context)
                     .load(R.drawable.ic_launcher_background)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .centerCrop()
                     .into(binding.ivProductImage)
             }
@@ -72,13 +78,14 @@ class ProductAdapter(
                 binding.arBadgeContainer.visibility = android.view.View.GONE
             }
 
-            // Favorite toggle
-            val favoriteIcon = if (product.isFavorite) R.drawable.ic_heart else R.drawable.ic_heart
-            binding.ivFavorite.setImageResource(favoriteIcon)
-            val favoriteColor = if (product.isFavorite) R.color.color_success else R.color.color_text_tertiary
-            binding.ivFavorite.setColorFilter(ContextCompat.getColor(context, favoriteColor))
+            // Favorite icon (Interactive & Animated)
+            updateFavoriteUI(product)
             
             binding.ivFavorite.setOnClickListener {
+                // Perform pulse animation
+                animateHeart(binding.ivFavorite)
+                
+                // Invoke callback
                 onFavoriteClick?.invoke(product)
             }
 
@@ -109,6 +116,26 @@ class ProductAdapter(
             }
         }
 
+        private fun updateFavoriteUI(product: Product) {
+            val context = binding.root.context
+            if (product.isFavorite) {
+                binding.ivFavorite.setImageResource(R.drawable.ic_heart) // Assuming ic_heart is filled
+                binding.ivFavorite.setColorFilter(ContextCompat.getColor(context, R.color.color_success))
+            } else {
+                binding.ivFavorite.setImageResource(R.drawable.ic_heart_outline)
+                binding.ivFavorite.setColorFilter(Color.parseColor("#BDBDBD"))
+            }
+        }
+
+        private fun animateHeart(view: android.view.View) {
+            val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1.0f, 1.25f, 1.0f)
+            val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1.0f, 1.25f, 1.0f)
+            val animatorSet = AnimatorSet()
+            animatorSet.playTogether(scaleX, scaleY)
+            animatorSet.duration = 300
+            animatorSet.start()
+        }
+
         private fun extractCategory(productName: String): String {
             return when {
                 productName.contains("Chair", ignoreCase = true) -> "Chaises"
@@ -136,7 +163,23 @@ class ProductAdapter(
     override fun getItemCount(): Int = productList.size
 
     fun updateProductList(newProductList: List<Product>) {
+        val diffCallback = ProductDiffCallback(productList, newProductList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         productList = newProductList
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    class ProductDiffCallback(
+        private val oldList: List<Product>,
+        private val newList: List<Product>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int = oldList.size
+        override fun getNewListSize(): Int = newList.size
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
     }
 }
