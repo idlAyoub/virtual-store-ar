@@ -1,3 +1,4 @@
+@'
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -35,7 +36,6 @@
                 app:tint="@color/color_text_primary"
                 android:background="?attr/selectableItemBackgroundBorderless" />
 
-            <!-- DYNAMIC MIDDLE SECTION: TITLE ↔ SEARCH -->
             <FrameLayout
                 android:id="@+id/middleSection"
                 android:layout_width="0dp"
@@ -153,7 +153,6 @@
                 android:orientation="horizontal"
                 android:paddingHorizontal="@dimen/spacing_screen"
                 android:gravity="center_vertical">
-                <!-- Chips are added programmatically -->
             </LinearLayout>
 
         </HorizontalScrollView>
@@ -174,7 +173,6 @@
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="2" />
 
-            <!-- EMPTY STATE SEARCH -->
             <LinearLayout
                 android:id="@+id/emptyStateSearch"
                 android:layout_width="wrap_content"
@@ -195,7 +193,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Aucun résultat trouvé"
+                    android:text="Aucun resultat trouve"
                     android:textColor="@color/color_text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -228,3 +226,4 @@
         app:menu="@menu/drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
+'@ | Set-Content -Path "app\src\main\res\layout\activity_main.xml" -Encoding UTF8

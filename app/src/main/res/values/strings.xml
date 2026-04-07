@@ -20,4 +20,16 @@
     <string name="total">Total</string>
     <string name="continue_shopping">Continue Shopping</string>
     <string name="view_order_details">View Order Details</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Settings</string>
+    <string name="language_title">Language</string>
+    <string name="select_language">Select Language</string>
+    <string name="dark_mode_title">Dark Mode</string>
+    <string name="about_title">About</string>
+    <string name="about_subtitle">VirtualStore v1.0</string>
+    <string name="cancel">Cancel</string>
+    <string name="english">English</string>
+    <string name="french">French</string>
+    <string name="arabic">Arabic</string>
 </resources>
