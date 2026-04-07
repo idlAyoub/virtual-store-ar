@@ -28,14 +28,21 @@
                 android:contentDescription="Product Image"
                 android:scaleType="centerCrop" />
 
-            <!-- Gradient scrim at bottom of image -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_gravity="bottom"
-                android:background="@drawable/gradient_image_scrim" />
+            <!-- Favorite Heart Icon -->
+            <ImageView
+                android:id="@+id/ivFavorite"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="top|start"
+                android:layout_margin="10dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_heart"
+                app:tint="@color/color_text_secondary"
+                android:background="@drawable/bg_ar_badge"
+                android:clickable="true"
+                android:focusable="true"/>
 
-            <!-- AR Badge top-right -->
+            <!-- AR Badge (top-right corner) -->
             <LinearLayout
                 android:id="@+id/arBadgeContainer"
                 android:layout_width="wrap_content"

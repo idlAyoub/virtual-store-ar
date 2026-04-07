@@ -14,6 +14,14 @@ class ProductRepository(private val productDao: ProductDao) {
         return productDao.searchProducts(query)
     }
 
+    fun getFavoriteProducts(): LiveData<List<Product>> {
+        return productDao.getFavoriteProducts()
+    }
+
+    suspend fun updateFavorite(id: Int, isFav: Boolean) {
+        productDao.updateFavorite(id, isFav)
+    }
+
     suspend fun insertAll(products: List<Product>) {
         productDao.insertAll(products)
     }
