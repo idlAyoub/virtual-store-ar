@@ -5,15 +5,45 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< Updated upstream
     android:background="@color/color_background"
     tools:context=".ui.MainActivity">
 
+=======
+    tools:context=".ui.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_background"
+        android:orientation="vertical">
+
+    <!-- HEADER SECTION -->
+>>>>>>> Stashed changes
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+<<<<<<< Updated upstream
         <!-- MODERN TOP NAVIGATION BAR -->
+=======
+        <!-- Hamburger Menu Icon -->
+        <ImageView
+            android:id="@+id/btnMenu"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_filter"
+            android:contentDescription="Menu"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            app:tint="@color/color_primary" />
+
+        <!-- App Title Container -->
+>>>>>>> Stashed changes
         <LinearLayout
             android:id="@+id/topBar"
             android:layout_width="match_parent"
@@ -29,6 +59,7 @@
                 android:id="@+id/ivMenu"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+<<<<<<< Updated upstream
                 android:padding="12dp"
                 android:src="@drawable/ic_menu"
                 android:contentDescription="Menu"
@@ -133,6 +164,17 @@
                     android:visibility="gone" />
 
             </FrameLayout>
+=======
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:hint="Rechercher un produit..."
+                android:background="@drawable/bg_search_bar"
+                android:textColor="@color/color_text_primary"
+                android:textColorHint="@color/color_text_tertiary"
+                android:textSize="14sp"
+                android:inputType="text"
+                android:maxLines="1" />
+>>>>>>> Stashed changes
 
         </LinearLayout>
 
@@ -228,4 +270,51 @@
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_menu" />
 
+<<<<<<< Updated upstream
+=======
+    <!-- PRODUCT GRID (2 COLUMNS) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvProducts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/color_background"
+        android:clipToPadding="false"
+        android:padding="10dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2" />
+
+    <!-- EMPTY STATE MESSAGE -->
+    <LinearLayout
+        android:id="@+id/layoutEmptyState"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No products found"
+            android:textColor="@color/color_text_secondary"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/color_white"
+        app:itemTextColor="@color/color_text_primary"
+        app:itemIconTint="@color/color_primary"
+        app:itemBackground="@drawable/bg_nav_item"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_menu" />
+
+>>>>>>> Stashed changes
 </androidx.drawerlayout.widget.DrawerLayout>

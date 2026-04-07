@@ -60,6 +60,13 @@ class MainActivity : ComponentActivity() {
     private val chipViews = mutableListOf<TextView>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val settingsPrefs = getSharedPreferences("settings_prefs", android.content.Context.MODE_PRIVATE)
+        val isDarkMode = settingsPrefs.getBoolean("dark_mode_enabled", false)
+        androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
+            if (isDarkMode) androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+            else androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+        )
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -86,6 +93,30 @@ class MainActivity : ComponentActivity() {
         setupCartIcon()
         observeProducts()
         observeCartUpdates()
+
+        // Setup Drawer Layout
+        val drawerLayout = findViewById<androidx.drawerlayout.widget.DrawerLayout>(R.id.drawerLayout)
+        val navigationView = findViewById<com.google.android.material.navigation.NavigationView>(R.id.navigationView)
+
+        findViewById<View>(R.id.btnMenu).setOnClickListener {
+            drawerLayout.openDrawer(androidx.core.view.GravityCompat.START)
+        }
+
+        navigationView.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_favorites -> {
+                    startActivity(Intent(this, FavoritesActivity::class.java))
+                    drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
+                    true
+                }
+                R.id.nav_settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     /**
@@ -331,6 +362,7 @@ class MainActivity : ComponentActivity() {
      * Observe product data and update UI
      */
     private fun observeProducts() {
+<<<<<<< Updated upstream
         productViewModel.filteredProducts.observe(this) { products ->
             productAdapter.updateProductList(products)
             
@@ -339,6 +371,19 @@ class MainActivity : ComponentActivity() {
                 emptyStateSearch.visibility = View.VISIBLE
             } else {
                 emptyStateSearch.visibility = View.GONE
+=======
+        val rvProducts = findViewById<RecyclerView>(R.id.rvProducts)
+        val layoutEmptyState = findViewById<View>(R.id.layoutEmptyState)
+        
+        productViewModel.filteredProducts.observe(this) { filteredProducts ->
+            productAdapter.updateProductList(filteredProducts)
+            if (filteredProducts.isEmpty()) {
+                rvProducts.visibility = View.GONE
+                layoutEmptyState.visibility = View.VISIBLE
+            } else {
+                rvProducts.visibility = View.VISIBLE
+                layoutEmptyState.visibility = View.GONE
+>>>>>>> Stashed changes
             }
         }
     }
