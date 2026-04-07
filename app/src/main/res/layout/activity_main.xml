@@ -1,133 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_background"
-    android:orientation="vertical"
     tools:context=".ui.MainActivity">
 
-    <!-- HEADER SECTION -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="@dimen/spacing_screen"
-        android:paddingVertical="16dp"
-        android:background="@color/color_card"
-        android:elevation="2dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <!-- App Title Container -->
+        <!-- MODERN TOP NAVIGATION BAR -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <!-- App Title: VirtualStore -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="VirtualStore"
-                android:textColor="@color/color_primary"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:letterSpacing="-0.02" />
-
-            <!-- Subtitle: Smart Shopping AR -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Smart Shopping AR"
-                android:textColor="@color/color_text_secondary"
-                android:textSize="12sp"
-                android:layout_marginTop="2dp" />
-
-        </LinearLayout>
-
-        <!-- Cart Icon with Badge -->
-        <FrameLayout
-            android:id="@+id/cartIconContainer"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true">
+            android:id="@+id/topBar"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="10dp"
+            android:background="@color/color_card"
+            android:elevation="4dp"
+            android:translationZ="4dp">
 
             <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_cart"
-                android:contentDescription="Cart"
-                app:tint="@color/color_primary" />
-
-            <!-- Cart Badge showing number of items -->
-            <TextView
-                android:id="@+id/tvCartBadge"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:layout_gravity="top|end"
-                android:layout_marginTop="2dp"
-                android:layout_marginEnd="2dp"
-                android:background="@drawable/badge_background_round"
-                android:text="0"
-                android:textColor="@color/color_white"
-                android:textSize="10sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:visibility="gone" />
-
-        </FrameLayout>
-
-    </LinearLayout>
-
-    <!-- SEARCH AND FILTER SECTION -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/color_card"
-        android:elevation="1dp">
-
-        <!-- Search Bar Row -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/spacing_screen"
-            android:paddingTop="4dp"
-            android:paddingBottom="12dp"
-            android:gravity="center_vertical">
-
-            <!-- Rounded Search Bar -->
-            <EditText
-                android:id="@+id/etSearch"
-                android:layout_width="match_parent"
+                android:id="@+id/ivMenu"
+                android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:hint="Rechercher un produit..."
-                android:background="@drawable/bg_search_bar"
-                android:textColor="@color/color_text_primary"
-                android:textColorHint="@color/color_text_tertiary"
-                android:textSize="14sp"
-                android:drawableStart="@drawable/ic_filter"
-                android:drawablePadding="12dp"
-                android:inputType="text"
-                android:maxLines="1" />
+                android:padding="12dp"
+                android:src="@drawable/ic_menu"
+                android:contentDescription="Menu"
+                app:tint="@color/color_text_primary"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+
+            <!-- DYNAMIC MIDDLE SECTION: TITLE ↔ SEARCH -->
+            <FrameLayout
+                android:id="@+id/middleSection"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="8dp">
+
+                <TextView
+                    android:id="@+id/tvAppTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Virtual Store"
+                    android:textColor="@color/color_text_primary"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="-0.01" />
+
+                <LinearLayout
+                    android:id="@+id/searchContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:background="@drawable/bg_search_bar"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="14dp"
+                    android:visibility="gone"
+                    android:alpha="0">
+
+                    <EditText
+                        android:id="@+id/etSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:hint="Rechercher..."
+                        android:textColor="@color/color_text_primary"
+                        android:textColorHint="@color/color_text_tertiary"
+                        android:textSize="14sp"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:imeOptions="actionSearch" />
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/ivSearchIcon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_search"
+                android:contentDescription="Search"
+                app:tint="@color/color_text_primary"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+
+            <ImageView
+                android:id="@+id/ivFavorite"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_heart"
+                android:contentDescription="Favorites"
+                app:tint="@color/color_text_primary"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+
+            <FrameLayout
+                android:id="@+id/cartIconContainer"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_cart"
+                    android:contentDescription="Cart"
+                    app:tint="@color/color_text_primary" />
+
+                <TextView
+                    android:id="@+id/tvCartBadge"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/badge_background_round"
+                    android:text="0"
+                    android:textColor="@color/color_white"
+                    android:textSize="9sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:visibility="gone" />
+
+            </FrameLayout>
 
         </LinearLayout>
 
-        <!-- Category Filter Chips -->
+        <!-- CATEGORY FILTER CHIPS -->
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none"
-            android:paddingBottom="12dp"
+            android:background="@color/color_card"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="4dp"
             android:clipToPadding="false">
 
             <LinearLayout
@@ -137,26 +153,79 @@
                 android:orientation="horizontal"
                 android:paddingHorizontal="@dimen/spacing_screen"
                 android:gravity="center_vertical">
-
                 <!-- Chips are added programmatically -->
-
             </LinearLayout>
 
         </HorizontalScrollView>
 
+
+        <!-- PRODUCT GRID & EMPTY STATE -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvProducts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_background"
+                android:clipToPadding="false"
+                android:padding="10dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2" />
+
+            <!-- EMPTY STATE SEARCH -->
+            <LinearLayout
+                android:id="@+id/emptyStateSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/ic_search_off"
+                    app:tint="@color/color_text_tertiary"
+                    android:alpha="0.5" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Aucun résultat trouvé"
+                    android:textColor="@color/color_text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Essayez de rechercher autre chose"
+                    android:textColor="@color/color_text_tertiary"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
     </LinearLayout>
 
+    <!-- SIDE DRAWER NAVIGATION -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/color_white"
+        app:itemTextColor="@color/color_text_primary"
+        app:itemIconTint="@color/color_primary"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_menu" />
 
-    <!-- PRODUCT GRID (2 COLUMNS) -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvProducts"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/color_background"
-        android:clipToPadding="false"
-        android:padding="10dp"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2" />
-
-</LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -7,10 +7,19 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.transition.TransitionManager
+import com.google.android.material.navigation.NavigationView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -40,6 +49,12 @@ class MainActivity : ComponentActivity() {
     private lateinit var productAdapter: ProductAdapter
     private lateinit var cartRepository: CartRepository
     private lateinit var tvCartBadge: TextView
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var tvAppTitle: TextView
+    private lateinit var searchContainer: View
+    private lateinit var etSearch: EditText
+    private lateinit var emptyStateSearch: View
+    private var isSearchExpanded = false
 
     private val categories = listOf("Tout", "Chaises", "Canapés", "Tables", "Éclairage", "Mobilier")
     private val chipViews = mutableListOf<TextView>()
@@ -63,6 +78,8 @@ class MainActivity : ComponentActivity() {
         }
 
         // Set up UI components
+        setupNavigationDrawer()
+        setupTopBar()
         setupRecyclerView()
         setupSearchBar()
         setupCategoryChips()
@@ -72,16 +89,157 @@ class MainActivity : ComponentActivity() {
     }
 
     /**
+     * Set up the Navigation Drawer and its items
+     */
+    private fun setupNavigationDrawer() {
+        drawerLayout = findViewById(R.id.drawerLayout)
+        val navView = findViewById<NavigationView>(R.id.navView)
+        
+        // Setup Close Button in Drawer Header
+        if (navView.headerCount > 0) {
+            val headerView = navView.getHeaderView(0)
+            headerView.findViewById<ImageView>(R.id.ivCloseDrawer)?.setOnClickListener {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            }
+        }
+
+        navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_home -> {
+                    // Already on home
+                }
+                R.id.nav_products -> {
+                    // Scroll to top or just close drawer
+                }
+                R.id.nav_categories -> {
+                    // Logic to show categories or scroll to chips
+                }
+                R.id.nav_favorites -> {
+                    startActivity(Intent(this, FavoritesActivity::class.java))
+                }
+                R.id.nav_orders -> {
+                    startActivity(Intent(this, OrderSummaryActivity::class.java))
+                }
+                R.id.nav_settings -> {
+                    Toast.makeText(this, "Settings bientôt disponible", Toast.LENGTH_SHORT).show()
+                }
+            }
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
+    }
+
+    /**
+     * Set up top bar icons and clicks with animation logic
+     */
+    private fun setupTopBar() {
+        val ivMenu = findViewById<ImageView>(R.id.ivMenu)
+        val ivSearchIcon = findViewById<ImageView>(R.id.ivSearchIcon)
+        val ivFavorite = findViewById<ImageView>(R.id.ivFavorite)
+        
+        tvAppTitle = findViewById(R.id.tvAppTitle)
+        searchContainer = findViewById(R.id.searchContainer)
+        etSearch = findViewById(R.id.etSearch)
+        emptyStateSearch = findViewById(R.id.emptyStateSearch)
+
+        ivMenu.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        ivSearchIcon.setOnClickListener {
+            toggleSearch(!isSearchExpanded)
+        }
+
+        ivFavorite.setOnClickListener {
+            startActivity(Intent(this, FavoritesActivity::class.java))
+        }
+    }
+
+    /**
+     * Smoothly toggle between app title and search bar
+     */
+    private fun toggleSearch(expand: Boolean) {
+        if (isSearchExpanded == expand) return
+        isSearchExpanded = expand
+
+        val ivSearchIcon = findViewById<ImageView>(R.id.ivSearchIcon)
+        val middleSection = findViewById<ViewGroup>(R.id.middleSection)
+
+        // Apply TransitionManager for smooth layout changes (width)
+        TransitionManager.beginDelayedTransition(middleSection)
+
+        if (expand) {
+            // 1. App Title: Fade out and slide left
+            tvAppTitle.animate()
+                .alpha(0f)
+                .translationX(-20f)
+                .setDuration(250)
+                .start()
+
+            // 2. Search Container: Expand width and fade in
+            searchContainer.visibility = View.VISIBLE
+            val params = searchContainer.layoutParams
+            params.width = ViewGroup.LayoutParams.MATCH_PARENT
+            searchContainer.layoutParams = params
+            
+            searchContainer.animate()
+                .alpha(1f)
+                .setDuration(300)
+                .start()
+
+            // 3. Search Icon: Turn green
+            ivSearchIcon.setColorFilter(ContextCompat.getColor(this, R.color.color_success))
+
+            // 4. Keyboard: Focus and show
+            etSearch.requestFocus()
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(etSearch, InputMethodManager.SHOW_IMPLICIT)
+
+        } else {
+            // 1. App Title: Fade in and slide back
+            tvAppTitle.animate()
+                .alpha(1f)
+                .translationX(0f)
+                .setDuration(250)
+                .start()
+
+            // 2. Search Container: Collapse width and fade out
+            searchContainer.animate()
+                .alpha(0f)
+                .setDuration(200)
+                .withEndAction { 
+                    searchContainer.visibility = View.GONE
+                    val params = searchContainer.layoutParams
+                    params.width = 0
+                    searchContainer.layoutParams = params
+                }
+                .start()
+
+            // 3. Search Icon: Default color
+            ivSearchIcon.setColorFilter(ContextCompat.getColor(this, R.color.color_text_primary))
+
+            // 4. Keyboard: Hide
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(etSearch.windowToken, 0)
+            
+            // Optional: clear search on close
+            // etSearch.setText("")
+        }
+    }
+
+    /**
      * Initialize RecyclerView with 2-column GridLayoutManager
      */
     private fun setupRecyclerView() {
         val rvProducts = findViewById<RecyclerView>(R.id.rvProducts)
         productAdapter = ProductAdapter(
             onAddToCartClick = { product ->
-                // Handle add to cart with quantity 1
                 lifecycleScope.launch {
                     cartRepository.addToCart(product.id, 1)
                 }
+            },
+            onFavoriteClick = { product ->
+                productViewModel.toggleFavorite(product)
             }
         )
         rvProducts.adapter = productAdapter
@@ -182,11 +340,18 @@ class MainActivity : ComponentActivity() {
     }
 
     /**
-     * Observe filtered products from ViewModel
+     * Observe product data and update UI
      */
     private fun observeProducts() {
-        productViewModel.filteredProducts.observe(this) { filteredProducts ->
-            productAdapter.updateProductList(filteredProducts)
+        productViewModel.filteredProducts.observe(this) { products ->
+            productAdapter.updateProductList(products)
+            
+            // Show empty state if no products found
+            if (products.isEmpty()) {
+                emptyStateSearch.visibility = View.VISIBLE
+            } else {
+                emptyStateSearch.visibility = View.GONE
+            }
         }
     }
 

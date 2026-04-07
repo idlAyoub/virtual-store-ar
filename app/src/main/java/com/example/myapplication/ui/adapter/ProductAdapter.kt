@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import androidx.core.content.ContextCompat
 import com.example.myapplication.ui.ProductDetailActivity
 import com.example.myapplication.R
 import com.example.myapplication.data.Product
@@ -19,7 +20,8 @@ import com.example.myapplication.databinding.ItemProductBinding
  */
 class ProductAdapter(
     private var productList: List<Product> = emptyList(),
-    private val onAddToCartClick: ((Product) -> Unit)? = null
+    private val onAddToCartClick: ((Product) -> Unit)? = null,
+    private val onFavoriteClick: ((Product) -> Unit)? = null
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     inner class ProductViewHolder(
@@ -68,6 +70,16 @@ class ProductAdapter(
                 }
             } else {
                 binding.arBadgeContainer.visibility = android.view.View.GONE
+            }
+
+            // Favorite toggle
+            val favoriteIcon = if (product.isFavorite) R.drawable.ic_heart else R.drawable.ic_heart
+            binding.ivFavorite.setImageResource(favoriteIcon)
+            val favoriteColor = if (product.isFavorite) R.color.color_success else R.color.color_text_tertiary
+            binding.ivFavorite.setColorFilter(ContextCompat.getColor(context, favoriteColor))
+            
+            binding.ivFavorite.setOnClickListener {
+                onFavoriteClick?.invoke(product)
             }
 
             // Card click → ProductDetailActivity

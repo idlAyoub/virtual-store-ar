@@ -60,6 +60,12 @@
             android:name="com.example.myapplication.ui.CartActivity"
             android:exported="false" />
 
+        <!-- Favorites Activity -->
+        <activity
+            android:name="com.example.myapplication.ui.FavoritesActivity"
+            android:exported="false"
+            android:parentActivityName="com.example.myapplication.ui.MainActivity" />
+
     </application>
 
 </manifest>

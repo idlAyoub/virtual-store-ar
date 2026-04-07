@@ -28,6 +28,10 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     // LiveData holding the complete list of products from the database
     private val _allProducts: LiveData<List<Product>>
 
+    // Category filter state
+    private val _selectedCategory = MutableLiveData<String>("Tout")
+    val selectedCategory: LiveData<String> = _selectedCategory
+
     // LiveData holding the filtered/searched product list
     private val _filteredProducts = MutableLiveData<List<Product>>()
     val filteredProducts: LiveData<List<Product>> = _filteredProducts
@@ -35,19 +39,21 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     // Search query state
     private val _searchQuery = MutableLiveData<String>("")
 
-    // Category filter state
-    private val _selectedCategory = MutableLiveData<String>("Tout")
-    val selectedCategory: LiveData<String> = _selectedCategory
+    // Favorite products (observed separately)
+    val favoriteProducts: LiveData<List<Product>>
 
     init {
-        // Initialize the database and repository
+        // Initialize the database and repository first
         val db = AppDatabase.getDatabase(application)
         productRepository = ProductRepository(db.productDao())
 
-        // Get all products from repository
+        // Now safe to initialize favoriteProducts
+        favoriteProducts = productRepository.getFavoriteProducts()
+
+        // Get all products
         _allProducts = productRepository.allProducts
 
-        // Initialize filtered products with all products
+        // Initialize filtered products
         _allProducts.observeForever { products ->
             performSearch(products, _searchQuery.value ?: "")
         }
@@ -101,6 +107,15 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         _selectedCategory.value = category
         val allProducts = _allProducts.value ?: emptyList()
         performSearch(allProducts, _searchQuery.value ?: "")
+    }
+
+    /**
+     * Update product favorite status
+     */
+    fun toggleFavorite(product: Product) {
+        viewModelScope.launch {
+            productRepository.updateFavorite(product.id, !product.isFavorite)
+        }
     }
 
     /**
