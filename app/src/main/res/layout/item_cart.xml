@@ -5,11 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
+    android:layout_marginBottom="10dp"
     app:cardBackgroundColor="@color/color_card"
-    app:cardCornerRadius="@dimen/radius_card"
-    app:cardElevation="1dp"
-    app:strokeColor="@color/color_divider"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/color_stroke_accent"
     app:strokeWidth="1dp">
 
     <LinearLayout
@@ -25,12 +25,12 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <!-- Product Image -->
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="@dimen/cart_item_image_size"
-                android:layout_height="@dimen/cart_item_image_size"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="0dp">
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/color_surface_elevated">
 
                 <ImageView
                     android:id="@+id/ivProductImage"
@@ -41,7 +41,7 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Product Info -->
+            <!-- Info -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold"
                     android:lineSpacingMultiplier="1.1"
-                    tools:text="Modern Oak Sofa" />
+                    tools:text="iPhone 12 Pro" />
 
                 <TextView
                     android:id="@+id/tvUnitPrice"
@@ -68,21 +68,21 @@
                     android:layout_marginTop="4dp"
                     android:textColor="@color/color_text_secondary"
                     android:textSize="12sp"
-                    tools:text="$120.00 each" />
+                    tools:text="$999.00 each" />
 
                 <TextView
                     android:id="@+id/tvItemSubtotal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:textColor="@color/color_primary"
+                    android:textColor="@color/color_accent_gold"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    tools:text="$240.00" />
+                    tools:text="$1,998.00" />
 
             </LinearLayout>
 
-            <!-- Delete Button -->
+            <!-- Delete -->
             <ImageButton
                 android:id="@+id/btnRemoveItem"
                 android:layout_width="36dp"
@@ -102,25 +102,23 @@
             android:layout_marginBottom="12dp"
             android:background="@color/color_divider" />
 
-        <!-- Bottom row: stock note + quantity stepper -->
+        <!-- Bottom: stock + quantity stepper -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <!-- Stock availability chip -->
             <TextView
                 android:id="@+id/tvStockNote"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawablePadding="4dp"
                 android:textColor="@color/color_text_secondary"
                 android:textSize="12sp"
                 tools:text="In Stock" />
 
-            <!-- Quantity Stepper -->
+            <!-- Quantity stepper -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="38dp"
@@ -131,16 +129,16 @@
 
                 <ImageButton
                     android:id="@+id/btnDecreaseQuantity"
-                    android:layout_width="@dimen/stepper_button_size"
-                    android:layout_height="@dimen/stepper_button_size"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Decrease quantity"
+                    android:contentDescription="Decrease"
                     android:src="@drawable/ic_minus"
                     app:tint="@color/color_text_primary" />
 
                 <TextView
                     android:id="@+id/tvQuantity"
-                    android:layout_width="@dimen/stepper_value_width"
+                    android:layout_width="36dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textColor="@color/color_text_primary"
@@ -150,12 +148,12 @@
 
                 <ImageButton
                     android:id="@+id/btnIncreaseQuantity"
-                    android:layout_width="@dimen/stepper_button_size"
-                    android:layout_height="@dimen/stepper_button_size"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Increase quantity"
+                    android:contentDescription="Increase"
                     android:src="@drawable/ic_plus"
-                    app:tint="@color/color_text_primary" />
+                    app:tint="@color/color_primary" />
 
             </LinearLayout>
 

@@ -9,73 +9,84 @@
     android:orientation="vertical"
     tools:context=".ui.MainActivity">
 
-    <!-- HEADER SECTION -->
+    <!-- ── HEADER ──────────────────────────────────────────── -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingHorizontal="@dimen/spacing_screen"
-        android:paddingVertical="16dp"
-        android:background="@color/color_card"
-        android:elevation="2dp">
+        android:paddingHorizontal="20dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="14dp"
+        android:background="@color/color_background">
 
-        <!-- App Title Container -->
+        <!-- Title block -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <!-- App Title: VirtualStore -->
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="VirtualStore"
-                android:textColor="@color/color_primary"
-                android:textSize="24sp"
+                android:textColor="@color/color_text_primary"
+                android:textSize="26sp"
                 android:textStyle="bold"
                 android:letterSpacing="-0.02" />
 
-            <!-- Subtitle: Smart Shopping AR -->
-            <TextView
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Smart Shopping AR"
-                android:textColor="@color/color_text_secondary"
-                android:textSize="12sp"
-                android:layout_marginTop="2dp" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="3dp">
+
+                <View
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/bg_add_cart_button" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="AR enabled"
+                    android:textColor="@color/color_primary"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <!-- Cart Icon with Badge -->
+        <!-- Cart button -->
         <FrameLayout
             android:id="@+id/cartIconContainer"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="?attr/selectableItemBackground"
+            android:background="@drawable/bg_header_button"
             android:clickable="true"
             android:focusable="true">
 
             <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_cart"
                 android:contentDescription="Cart"
-                app:tint="@color/color_primary" />
+                app:tint="@color/color_text_primary" />
 
-            <!-- Cart Badge showing number of items -->
             <TextView
                 android:id="@+id/tvCartBadge"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="top|end"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="2dp"
                 android:background="@drawable/badge_background_round"
                 android:text="0"
-                android:textColor="@color/color_white"
+                android:textColor="@color/color_on_primary"
                 android:textSize="10sp"
                 android:textStyle="bold"
                 android:gravity="center"
@@ -85,69 +96,40 @@
 
     </LinearLayout>
 
-    <!-- SEARCH AND FILTER SECTION -->
+    <!-- ── SEARCH ──────────────────────────────────────────── -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/color_card"
-        android:elevation="1dp">
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="12dp"
+        android:background="@color/color_background">
 
-        <!-- Search Bar Row -->
-        <LinearLayout
+        <EditText
+            android:id="@+id/etSearch"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/spacing_screen"
-            android:paddingTop="4dp"
-            android:paddingBottom="12dp"
-            android:gravity="center_vertical">
-
-            <!-- Rounded Search Bar -->
-            <EditText
-                android:id="@+id/etSearch"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:hint="Rechercher un produit..."
-                android:background="@drawable/bg_search_bar"
-                android:textColor="@color/color_text_primary"
-                android:textColorHint="@color/color_text_tertiary"
-                android:textSize="14sp"
-                android:drawableStart="@drawable/ic_filter"
-                android:drawablePadding="12dp"
-                android:inputType="text"
-                android:maxLines="1" />
-
-        </LinearLayout>
-
-        <!-- Category Filter Chips -->
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:paddingBottom="12dp"
-            android:clipToPadding="false">
-
-            <LinearLayout
-                android:id="@+id/chipContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingHorizontal="@dimen/spacing_screen"
-                android:gravity="center_vertical">
-
-                <!-- Chips are added programmatically -->
-
-            </LinearLayout>
-
-        </HorizontalScrollView>
+            android:layout_height="50dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:hint="Search products..."
+            android:background="@drawable/bg_search_bar"
+            android:textColor="@color/color_text_primary"
+            android:textColorHint="@color/color_text_tertiary"
+            android:textSize="14sp"
+            android:drawableStart="@drawable/ic_filter"
+            android:drawablePadding="12dp"
+            android:inputType="text"
+            android:maxLines="1" />
 
     </LinearLayout>
 
+    <!-- Slim divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_divider" />
 
-    <!-- PRODUCT GRID (2 COLUMNS) -->
+    <!-- ── PRODUCT GRID ──────────────────────────────────────── -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProducts"
         android:layout_width="match_parent"
@@ -155,7 +137,7 @@
         android:layout_weight="1"
         android:background="@color/color_background"
         android:clipToPadding="false"
-        android:padding="10dp"
+        android:padding="8dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2" />
 
