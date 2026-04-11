@@ -13,4 +13,5 @@ data class Product(
     val stock: Int,
     val imageResource: String,
     val arModelResource: String,
+    val isFavorite: Boolean = false
 )

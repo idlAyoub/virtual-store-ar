@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
@@ -28,19 +29,12 @@
                 android:contentDescription="Product Image"
                 android:scaleType="centerCrop" />
 
-            <!-- Gradient scrim at bottom of image -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_gravity="bottom"
-                android:background="@drawable/gradient_image_scrim" />
-
-            <!-- AR Badge top-right -->
+            <!-- AR Badge (top-left corner) -->
             <LinearLayout
                 android:id="@+id/arBadgeContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|end"
+                android:layout_gravity="top|start"
                 android:layout_margin="10dp"
                 android:background="@drawable/bg_ar_badge"
                 android:paddingHorizontal="8dp"
@@ -67,6 +61,21 @@
 
             </LinearLayout>
 
+            <!-- Favorite Heart Icon (top-right corner, Interactive & Animated) -->
+            <ImageView
+                android:id="@+id/ivFavorite"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="top|end"
+                android:layout_margin="10dp"
+                android:padding="4dp"
+                android:src="@drawable/ic_heart_outline"
+                app:tint="#BDBDBD"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="Favorite" />
+
         </FrameLayout>
 
         <!-- Content -->
@@ -81,7 +90,7 @@
                 android:id="@+id/tvCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Electronics"
+                tools:text="Electronics"
                 android:textColor="@color/color_primary"
                 android:textSize="10sp"
                 android:textStyle="bold"
@@ -99,7 +108,7 @@
                 android:layout_marginTop="8dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="Product Name"
+                tools:text="Product Name"
                 android:textColor="@color/color_text_primary"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -118,7 +127,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="$0.00"
+                    tools:text="$0.00"
                     android:textColor="@color/color_accent_gold"
                     android:textSize="17sp"
                     android:textStyle="bold" />
