@@ -39,66 +39,37 @@ class ProductAdapter(
 
             // Get the drawable resource ID from the image name
             val context = binding.root.context
-<<<<<<< Updated upstream
-            val resourceId = context.resources.getIdentifier(
-                product.imageResource,
-                "drawable",
-                context.packageName
-            )
-
-            // Load image using Glide with resource ID and optimized cache
-            if (resourceId != 0) {
-                com.bumptech.glide.Glide.with(context)
-                    .load(resourceId)
-=======
-            
+            // Image loading logic: Supports both remote URLs and local drawables
             if (product.imageResource.startsWith("http")) {
-                Glide.with(context)
+                com.bumptech.glide.Glide.with(context)
                     .load(product.imageResource)
->>>>>>> Stashed changes
                     .placeholder(R.drawable.ic_launcher_background)
                     .error(R.drawable.ic_launcher_background)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .centerCrop()
                     .into(binding.ivProductImage)
             } else {
-<<<<<<< Updated upstream
-                // If resource not found, show placeholder
-                com.bumptech.glide.Glide.with(context)
-                    .load(R.drawable.ic_launcher_background)
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .centerCrop()
-                    .into(binding.ivProductImage)
-=======
                 val resourceId = context.resources.getIdentifier(
                     product.imageResource,
                     "drawable",
                     context.packageName
                 )
-
-                // Load image using Glide with resource ID
-                if (resourceId != 0) {
-                    Glide.with(context)
-                        .load(resourceId)
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .error(R.drawable.ic_launcher_background)
-                        .centerCrop()
-                        .into(binding.ivProductImage)
-                } else {
-                    // If resource not found, show placeholder
-                    Glide.with(context)
-                        .load(R.drawable.ic_launcher_background)
-                        .centerCrop()
-                        .into(binding.ivProductImage)
-                }
->>>>>>> Stashed changes
+                
+                val imageToLoad: Any = if (resourceId != 0) resourceId else R.drawable.ic_launcher_background
+                
+                com.bumptech.glide.Glide.with(context)
+                    .load(imageToLoad)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_background)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .centerCrop()
+                    .into(binding.ivProductImage)
             }
 
             // Show/hide AR badge based on AR model availability
             if (product.arModelResource.isNotEmpty()) {
                 binding.arBadgeContainer.visibility = android.view.View.VISIBLE
                 binding.arBadgeContainer.setOnClickListener {
-                    val context = binding.root.context
                     val intent = Intent(context, com.example.myapplication.ui.ARViewActivity::class.java)
                     intent.putExtra("AR_MODEL", product.arModelResource)
                     intent.putExtra("PRODUCT_NAME", product.name)
@@ -109,29 +80,14 @@ class ProductAdapter(
                 binding.arBadgeContainer.visibility = android.view.View.GONE
             }
 
-<<<<<<< Updated upstream
             // Favorite icon (Interactive & Animated)
             updateFavoriteUI(product)
             
             binding.ivFavorite.setOnClickListener {
-                // Perform pulse animation
                 animateHeart(binding.ivFavorite)
-                
-                // Invoke callback
-=======
-            // Favorite button state and click listener
-            if (product.isFavorite) {
-                binding.btnFavorite.setImageResource(R.drawable.ic_heart_filled)
-                binding.btnFavorite.setColorFilter(androidx.core.content.ContextCompat.getColor(context, R.color.color_primary))
-            } else {
-                binding.btnFavorite.setImageResource(R.drawable.ic_heart_outline)
-                binding.btnFavorite.setColorFilter(androidx.core.content.ContextCompat.getColor(context, R.color.color_text_tertiary))
-            }
-
-            binding.btnFavorite.setOnClickListener {
->>>>>>> Stashed changes
                 onFavoriteClick?.invoke(product)
             }
+
 
             // Card click → ProductDetailActivity
             binding.root.setOnClickListener {

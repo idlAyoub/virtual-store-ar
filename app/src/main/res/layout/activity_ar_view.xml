@@ -76,7 +76,7 @@
         android:background="@drawable/badge_background"
         android:paddingHorizontal="18dp"
         android:paddingVertical="9dp"
-        android:text="Searching for surfaces…"
+        android:text="@string/searching_surfaces"
         android:textColor="@color/color_white"
         android:textSize="13sp"
         android:visibility="gone" />
@@ -100,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Loading model…"
+            android:text="@string/loading_model"
             android:textColor="@color/color_white"
             android:textSize="14sp" />
 
@@ -128,18 +128,18 @@
             android:layout_marginBottom="14dp">
 
             <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-                <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_drag" android:contentDescription="Move" app:tint="@color/color_text_secondary" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="Move" android:textColor="@color/color_text_secondary" android:textSize="11sp" />
+                <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_drag" android:contentDescription="@string/move" app:tint="@color/color_text_secondary" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="@string/move" android:textColor="@color/color_text_secondary" android:textSize="11sp" />
             </LinearLayout>
 
             <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-                <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_scale" android:contentDescription="Scale" app:tint="@color/color_text_secondary" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="Pinch Scale" android:textColor="@color/color_text_secondary" android:textSize="11sp" />
+                <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_scale" android:contentDescription="@string/pinch_scale" app:tint="@color/color_text_secondary" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="@string/pinch_scale" android:textColor="@color/color_text_secondary" android:textSize="11sp" />
             </LinearLayout>
 
             <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-                <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_camera" android:contentDescription="Rotate" app:tint="@color/color_text_secondary" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="Rotate" android:textColor="@color/color_text_secondary" android:textSize="11sp" />
+                <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_camera" android:contentDescription="@string/rotate" app:tint="@color/color_text_secondary" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="@string/rotate" android:textColor="@color/color_text_secondary" android:textSize="11sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -157,7 +157,7 @@
                 android:layout_height="46dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="6dp"
-                android:text="Scale −"
+                android:text="@string/scale_minus"
                 android:textSize="13sp"
                 android:backgroundTint="@color/color_surface_elevated"
                 android:textColor="@color/color_text_primary"
@@ -171,7 +171,7 @@
                 android:layout_height="46dp"
                 android:layout_weight="1"
                 android:layout_marginStart="6dp"
-                android:text="Scale +"
+                android:text="@string/scale_plus"
                 android:textSize="13sp"
                 android:backgroundTint="@color/color_surface_elevated"
                 android:textColor="@color/color_text_primary"
@@ -193,7 +193,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
-                android:text="Reset"
+                android:text="@string/reset"
                 android:textSize="14sp"
                 android:backgroundTint="@color/color_surface_elevated"
                 android:textColor="@color/color_text_primary"
@@ -207,7 +207,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="2"
                 android:layout_marginStart="8dp"
-                android:text="Add to Cart"
+                android:text="@string/add_to_cart"
                 android:textSize="14sp"
                 android:backgroundTint="@color/color_primary"
                 android:textColor="@color/color_on_primary"

@@ -37,10 +37,4 @@ interface ProductDao {
     // Update stock after a successful order
     @Query("UPDATE products SET stock = :newStock WHERE id = :productId")
     suspend fun updateStock(productId: Int, newStock: Int)
-
-    @Query("SELECT * FROM products WHERE isFavorite = 1")
-    fun getFavoriteProducts(): LiveData<List<Product>>
-
-    @Query("UPDATE products SET isFavorite = :isFavorite WHERE id = :id")
-    suspend fun updateFavorite(id: Int, isFavorite: Boolean)
-}
+}

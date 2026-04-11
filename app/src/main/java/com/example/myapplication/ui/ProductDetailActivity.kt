@@ -87,10 +87,10 @@ class ProductDetailActivity : ComponentActivity() {
             // Stock
             val tvStock = findViewById<TextView>(R.id.tvDetailStock)
             if (product.stock > 0) {
-                tvStock.text = "In Stock (${product.stock} left)"
+                tvStock.text = getString(R.string.in_stock) + " (${product.stock} left)"
                 tvStock.setTextColor(getColor(android.R.color.holo_green_dark))
             } else {
-                tvStock.text = "Out of Stock"
+                tvStock.text = getString(R.string.out_of_stock)
                 tvStock.setTextColor(getColor(android.R.color.holo_red_dark))
             }
 

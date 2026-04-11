@@ -126,15 +126,6 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     }
 
     /**
-     * Toggle the favorite status of a product
-     */
-    fun toggleFavorite(product: Product) {
-        viewModelScope.launch {
-            productRepository.toggleFavorite(product.id, !product.isFavorite)
-        }
-    }
-
-    /**
      * Extract category from product name
      */
     private fun extractCategory(productName: String): String {

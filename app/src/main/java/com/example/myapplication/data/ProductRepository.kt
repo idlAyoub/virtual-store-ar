@@ -26,11 +26,7 @@ class ProductRepository(private val productDao: ProductDao) {
         productDao.insertAll(products)
     }
 
-    fun getFavoriteProducts(): LiveData<List<Product>> {
-        return productDao.getFavoriteProducts()
-    }
-
     suspend fun toggleFavorite(id: Int, isFavorite: Boolean) {
         productDao.updateFavorite(id, isFavorite)
     }
-}
+}

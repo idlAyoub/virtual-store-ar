@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Same as day — we enforce dark always -->
-    <style name="Base.Theme.MyApplication" parent="Theme.Material3.Light.NoActionBar">
+    <style name="Base.Theme.MyApplication" parent="Theme.Material3.Dark.NoActionBar">
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorOnPrimary">@color/color_on_primary</item>
         <item name="colorPrimaryContainer">@color/color_badge_bg</item>

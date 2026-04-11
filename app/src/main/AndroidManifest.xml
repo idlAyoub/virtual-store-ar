@@ -67,15 +67,6 @@
             android:exported="false"
             android:parentActivityName="com.example.myapplication.ui.MainActivity" />
 
-<<<<<<< Updated upstream
-=======
-        <!-- Settings Activity -->
-        <activity
-            android:name="com.example.myapplication.ui.SettingsActivity"
-            android:exported="false"
-            android:parentActivityName="com.example.myapplication.ui.MainActivity" />
-
->>>>>>> Stashed changes
     </application>
 
 </manifest>

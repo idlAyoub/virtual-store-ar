@@ -6,11 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-<<<<<<< Updated upstream
-@Database(entities = [Product::class, CartItem::class], version = 3, exportSchema = false)
-=======
 @Database(entities = [Product::class, CartItem::class], version = 5, exportSchema = false)
->>>>>>> Stashed changes
+
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun cartDao(): CartDao
