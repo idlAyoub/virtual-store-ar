@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:id="@+id/main_group" android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_favorites"
+            android:icon="@drawable/ic_heart"
+            android:title="@string/nav_favorites" />
+        <item
+            android:id="@+id/nav_orders"
+            android:icon="@drawable/ic_cart"
+            android:title="@string/nav_orders" />
+    </group>
+</menu>

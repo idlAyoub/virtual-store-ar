@@ -28,7 +28,17 @@ interface ProductDao {
     @Query("SELECT COUNT(*) FROM products")
     suspend fun getProductCount(): Int
 
+    @Query("SELECT * FROM products WHERE isFavorite = 1")
+    fun getFavoriteProducts(): LiveData<List<Product>>
+
+    @Query("UPDATE products SET isFavorite = :isFav WHERE id = :id")
+    suspend fun updateFavorite(id: Int, isFav: Boolean)
+
+    // Filter products by category
+    @Query("SELECT * FROM products WHERE categoryId = :categoryId")
+    fun getProductsByCategory(categoryId: Int): LiveData<List<Product>>
+
     // Update stock after a successful order
     @Query("UPDATE products SET stock = :newStock WHERE id = :productId")
     suspend fun updateStock(productId: Int, newStock: Int)
-}
+}

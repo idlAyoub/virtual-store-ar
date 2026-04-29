@@ -46,7 +46,8 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_back"
-                    android:contentDescription="Back" />
+                    android:contentDescription="Back"
+                    app:tint="@color/color_white" />
 
             </FrameLayout>
 
@@ -117,7 +118,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Description"
+                    android:text="@string/description"
                     android:textColor="@color/color_text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -181,7 +182,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="View in Your Space"
+                                    android:text="@string/view_in_ar"
                                     android:textColor="@color/color_text_primary"
                                     android:textSize="15sp"
                                     android:textStyle="bold" />
@@ -190,7 +191,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="3dp"
-                                    android:text="See how it looks in your room"
+                                    android:text="@string/ar_desc"
                                     android:textColor="@color/color_text_secondary"
                                     android:textSize="12sp" />
 
@@ -207,7 +208,7 @@
                         android:layout_height="54dp"
                         android:layout_marginTop="12dp"
                         android:backgroundTint="@color/color_primary"
-                        android:text="View in AR"
+                        android:text="@string/btn_ar"
                         android:textColor="@color/color_on_primary"
                         android:textSize="15sp"
                         android:textStyle="bold"
@@ -225,7 +226,7 @@
                     android:layout_height="56dp"
                     android:layout_marginTop="20dp"
                     android:backgroundTint="@color/color_primary"
-                    android:text="Add to Cart"
+                    android:text="@string/add_to_cart"
                     android:textColor="@color/color_on_primary"
                     android:textSize="16sp"
                     android:textStyle="bold"

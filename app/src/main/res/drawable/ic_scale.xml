@@ -6,6 +6,6 @@
     android:viewportHeight="24">
     <!-- Simple pinch/scale icon — two opposing arrows -->
     <path
-        android:fillColor="#FF000000"
+        android:fillColor="#FFFFFF"
         android:pathData="M15,3h6v6l-2.29,-2.29 -9.83,9.83L11,18H5v-6l2.29,2.29 9.83,-9.83z"/>
 </vector>

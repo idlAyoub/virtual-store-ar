@@ -6,12 +6,16 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [Product::class, CartItem::class], version = 2)
+@Database(entities = [Product::class, CartItem::class, Category::class], version = 6, exportSchema = false)
+
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun cartDao(): CartDao
 
     abstract fun productDao(): ProductDao
+
+    abstract fun categoryDao(): CategoryDao
+
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
@@ -21,7 +25,7 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "app_database"
+                    "virtual_store_db"
                 ).fallbackToDestructiveMigration()
                 .build()
 

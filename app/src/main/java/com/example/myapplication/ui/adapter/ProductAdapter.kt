@@ -5,11 +5,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import androidx.recyclerview.widget.DiffUtil
+import androidx.core.content.ContextCompat
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.myapplication.ui.ProductDetailActivity
 import com.example.myapplication.R
 import com.example.myapplication.data.Product
 import com.example.myapplication.databinding.ItemProductBinding
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.graphics.Color
 
 /**
  * ProductAdapter — 2-column grid of product cards.
@@ -19,7 +24,8 @@ import com.example.myapplication.databinding.ItemProductBinding
  */
 class ProductAdapter(
     private var productList: List<Product> = emptyList(),
-    private val onAddToCartClick: ((Product) -> Unit)? = null
+    private val onAddToCartClick: ((Product) -> Unit)? = null,
+    private val onFavoriteClick: ((Product) -> Unit)? = null
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     inner class ProductViewHolder(
@@ -33,24 +39,29 @@ class ProductAdapter(
 
             // Get the drawable resource ID from the image name
             val context = binding.root.context
-            val resourceId = context.resources.getIdentifier(
-                product.imageResource,
-                "drawable",
-                context.packageName
-            )
-
-            // Load image using Glide with resource ID
-            if (resourceId != 0) {
-                Glide.with(context)
-                    .load(resourceId)
+            // Image loading logic: Supports both remote URLs and local drawables
+            if (product.imageResource.startsWith("http")) {
+                com.bumptech.glide.Glide.with(context)
+                    .load(product.imageResource)
                     .placeholder(R.drawable.ic_launcher_background)
                     .error(R.drawable.ic_launcher_background)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .centerCrop()
                     .into(binding.ivProductImage)
             } else {
-                // If resource not found, show placeholder
-                Glide.with(context)
-                    .load(R.drawable.ic_launcher_background)
+                val resourceId = context.resources.getIdentifier(
+                    product.imageResource,
+                    "drawable",
+                    context.packageName
+                )
+                
+                val imageToLoad: Any = if (resourceId != 0) resourceId else R.drawable.ic_launcher_background
+                
+                com.bumptech.glide.Glide.with(context)
+                    .load(imageToLoad)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_background)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .centerCrop()
                     .into(binding.ivProductImage)
             }
@@ -59,7 +70,6 @@ class ProductAdapter(
             if (product.arModelResource.isNotEmpty()) {
                 binding.arBadgeContainer.visibility = android.view.View.VISIBLE
                 binding.arBadgeContainer.setOnClickListener {
-                    val context = binding.root.context
                     val intent = Intent(context, com.example.myapplication.ui.ARViewActivity::class.java)
                     intent.putExtra("AR_MODEL", product.arModelResource)
                     intent.putExtra("PRODUCT_NAME", product.name)
@@ -69,6 +79,15 @@ class ProductAdapter(
             } else {
                 binding.arBadgeContainer.visibility = android.view.View.GONE
             }
+
+            // Favorite icon (Interactive & Animated)
+            updateFavoriteUI(product)
+            
+            binding.ivFavorite.setOnClickListener {
+                animateHeart(binding.ivFavorite)
+                onFavoriteClick?.invoke(product)
+            }
+
 
             // Card click → ProductDetailActivity
             binding.root.setOnClickListener {
@@ -95,6 +114,26 @@ class ProductAdapter(
                     Toast.LENGTH_SHORT
                 ).show()
             }
+        }
+
+        private fun updateFavoriteUI(product: Product) {
+            val context = binding.root.context
+            if (product.isFavorite) {
+                binding.ivFavorite.setImageResource(R.drawable.ic_heart) // Assuming ic_heart is filled
+                binding.ivFavorite.setColorFilter(ContextCompat.getColor(context, R.color.color_success))
+            } else {
+                binding.ivFavorite.setImageResource(R.drawable.ic_heart_outline)
+                binding.ivFavorite.setColorFilter(Color.parseColor("#BDBDBD"))
+            }
+        }
+
+        private fun animateHeart(view: android.view.View) {
+            val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1.0f, 1.25f, 1.0f)
+            val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1.0f, 1.25f, 1.0f)
+            val animatorSet = AnimatorSet()
+            animatorSet.playTogether(scaleX, scaleY)
+            animatorSet.duration = 300
+            animatorSet.start()
         }
 
         private fun extractCategory(productName: String): String {
@@ -124,7 +163,23 @@ class ProductAdapter(
     override fun getItemCount(): Int = productList.size
 
     fun updateProductList(newProductList: List<Product>) {
+        val diffCallback = ProductDiffCallback(productList, newProductList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         productList = newProductList
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    class ProductDiffCallback(
+        private val oldList: List<Product>,
+        private val newList: List<Product>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int = oldList.size
+        override fun getNewListSize(): Int = newList.size
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
     }
 }
