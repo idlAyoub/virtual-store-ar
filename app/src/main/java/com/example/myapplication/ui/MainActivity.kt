@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.data.AppDatabase
 import com.example.myapplication.data.CartRepository
+import com.example.myapplication.data.Category
 import com.example.myapplication.data.DataSeeder
 import com.example.myapplication.ui.adapter.ProductAdapter
 import com.example.myapplication.viewmodel.ProductViewModel
@@ -38,7 +39,7 @@ import kotlinx.coroutines.launch
  * Features:
  * - Header with app title and cart badge
  * - Search bar
- * - Category filter chips (All, Chairs, Sofas, Tables, Lighting)
+ * - Category filter chips loaded dynamically from the database
  * - 2-column product grid layout
  * - Real-time product filtering
  * - Cart item counter badge
@@ -56,8 +57,9 @@ class MainActivity : ComponentActivity() {
     private lateinit var emptyStateSearch: View
     private var isSearchExpanded = false
 
-    private val categories = listOf("All", "Chairs", "Sofas", "Tables", "Lighting", "Furniture")
+    // Dynamic chip views — rebuilt when categories load from DB
     private val chipViews = mutableListOf<TextView>()
+    private var selectedCategoryId: Int? = null  // null = "All"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,8 +72,11 @@ class MainActivity : ComponentActivity() {
         // Initialize ViewModel
         productViewModel = ViewModelProvider(this)[ProductViewModel::class.java]
 
-        // Seed database with initial products if empty
+        // Seed database with initial categories and products if empty
         lifecycleScope.launch {
+            if (db.categoryDao().getCategoryCount() == 0) {
+                db.categoryDao().insertAll(DataSeeder.getCategoryList())
+            }
             if (db.productDao().getProductCount() == 0) {
                 db.productDao().insertAll(DataSeeder.getProductList())
             }
@@ -82,8 +87,8 @@ class MainActivity : ComponentActivity() {
         setupTopBar()
         setupRecyclerView()
         setupSearchBar()
-        setupCategoryChips()
         setupCartIcon()
+        observeCategories()
         observeProducts()
         observeCartUpdates()
 
@@ -254,31 +259,66 @@ class MainActivity : ComponentActivity() {
     }
 
     /**
-     * Set up category filter chips dynamically
+     * Observe categories from the database and build filter chips dynamically.
+     * Adds an "All" chip first, then one chip per category from the DB.
      */
-    private fun setupCategoryChips() {
+    private fun observeCategories() {
+        productViewModel.categories.observe(this) { dbCategories ->
+            buildCategoryChips(dbCategories)
+        }
+    }
+
+    /**
+     * Build category filter chips dynamically from the database.
+     */
+    private fun buildCategoryChips(dbCategories: List<Category>) {
         val chipContainer = findViewById<LinearLayout>(R.id.chipContainer)
+        chipContainer.removeAllViews()
+        chipViews.clear()
 
-        categories.forEachIndexed { index, category ->
-            val chip = TextView(this).apply {
-                text = category
-                textSize = 14f
-                setPadding(
-                    resources.getDimensionPixelSize(R.dimen.chip_padding_horizontal),
-                    resources.getDimensionPixelSize(R.dimen.chip_padding_vertical),
-                    resources.getDimensionPixelSize(R.dimen.chip_padding_horizontal),
-                    resources.getDimensionPixelSize(R.dimen.chip_padding_vertical)
-                )
-                minWidth = resources.getDimensionPixelSize(R.dimen.chip_min_width)
-                gravity = android.view.Gravity.CENTER
-                isClickable = true
-                isFocusable = true
+        // "All" chip (categoryId = null)
+        val allChip = createChipView("All", 0)
+        allChip.setOnClickListener {
+            selectedCategoryId = null
+            productViewModel.setCategory(null)
+            updateChipSelection(null)
+        }
+        chipViews.add(allChip)
+        chipContainer.addView(allChip)
 
-                setOnClickListener {
-                    productViewModel.setCategory(category)
-                    updateChipSelection(category)
-                }
+        // One chip per DB category
+        dbCategories.forEachIndexed { index, category ->
+            val chip = createChipView(category.name, index + 1)
+            chip.setOnClickListener {
+                selectedCategoryId = category.id
+                productViewModel.setCategory(category.id)
+                updateChipSelection(category.id)
             }
+            chipViews.add(chip)
+            chipContainer.addView(chip)
+        }
+
+        // Default: select "All"
+        updateChipSelection(selectedCategoryId)
+    }
+
+    /**
+     * Create a single chip TextView with consistent styling
+     */
+    private fun createChipView(label: String, index: Int): TextView {
+        return TextView(this).apply {
+            text = label
+            textSize = 14f
+            setPadding(
+                resources.getDimensionPixelSize(R.dimen.chip_padding_horizontal),
+                resources.getDimensionPixelSize(R.dimen.chip_padding_vertical),
+                resources.getDimensionPixelSize(R.dimen.chip_padding_horizontal),
+                resources.getDimensionPixelSize(R.dimen.chip_padding_vertical)
+            )
+            minWidth = resources.getDimensionPixelSize(R.dimen.chip_min_width)
+            gravity = android.view.Gravity.CENTER
+            isClickable = true
+            isFocusable = true
 
             val params = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -287,21 +327,30 @@ class MainActivity : ComponentActivity() {
             if (index > 0) {
                 params.marginStart = resources.getDimensionPixelSize(R.dimen.chip_gap)
             }
-            chip.layoutParams = params
-
-            chipViews.add(chip)
-            chipContainer.addView(chip)
+            layoutParams = params
         }
-
-        updateChipSelection("All")
     }
 
     /**
-     * Update chip visual selection state
+     * Update chip visual selection state.
+     * @param activeCategoryId The selected category ID, or null for "All"
      */
-    private fun updateChipSelection(selectedCategory: String) {
-        chipViews.forEach { chip ->
-            if (chip.text == selectedCategory) {
+    private fun updateChipSelection(activeCategoryId: Int?) {
+        // The first chip is always "All" (index 0)
+        chipViews.forEachIndexed { index, chip ->
+            val isSelected = if (index == 0) {
+                activeCategoryId == null  // "All" is selected when no category
+            } else {
+                // Retrieve the category ID from the ViewModel's categories list
+                val categories = productViewModel.categories.value ?: emptyList()
+                if (index - 1 < categories.size) {
+                    categories[index - 1].id == activeCategoryId
+                } else {
+                    false
+                }
+            }
+
+            if (isSelected) {
                 chip.setBackgroundResource(R.drawable.bg_chip_selected)
                 chip.setTextColor(ContextCompat.getColor(this, R.color.color_white))
                 chip.setTypeface(chip.typeface, android.graphics.Typeface.BOLD)

@@ -6,13 +6,16 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [Product::class, CartItem::class], version = 5, exportSchema = false)
+@Database(entities = [Product::class, CartItem::class, Category::class], version = 6, exportSchema = false)
 
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun cartDao(): CartDao
 
     abstract fun productDao(): ProductDao
+
+    abstract fun categoryDao(): CategoryDao
+
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
